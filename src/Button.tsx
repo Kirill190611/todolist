@@ -1,9 +1,9 @@
 import React from 'react';
 
-type ButtonProps = {
+type ButtonType = {
     title: string
 }
-export const Button = ({title}: ButtonProps) => {
+export const Button = ({title}: ButtonType) => {
     return (
         <button>{title}</button>
     );
