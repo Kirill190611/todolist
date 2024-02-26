@@ -1,8 +1,6 @@
 import React from 'react';
 import './App.css';
 import {TaskType, TodoList} from "./TodoList";
-import {TodolistHeader} from "./TodolistHeader";
-
 
 function App() {
 
