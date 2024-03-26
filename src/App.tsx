@@ -95,12 +95,12 @@ function App() {
                             key={el.id}
                             todolistId={el.id}
                             title={el.title}
+                            filter={el.filter}
                             tasks={tasksForTodolist}
                             removeTask={removeTask}
                             changeFilter={changeFilter}
                             addTask={addTask}
                             changeTaskStatus={changeTaskStatus}
-                            filter={el.filter}
                             removeTodolist={removeTodolist}
                         />
                     )

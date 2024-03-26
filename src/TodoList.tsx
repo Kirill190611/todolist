@@ -14,8 +14,18 @@ type PropsType = {
     removeTodolist: (todolistId: string) => void
 }
 
-export const Todolist = (props: PropsType) => {
-    // todo: сделать после занятия
+export const Todolist = ({
+                             title,
+                             tasks,
+                             filter,
+                             removeTask,
+                             changeFilter,
+                             addTask,
+                             changeTaskStatus,
+                             removeTodolist,
+                             todolistId
+                         }: PropsType) => {
+    // todo: необходимо перенести функцию из APP в todolist
     // let tasksForTodolist = tasks
     // if (filter === 'active') {
     // 	tasksForTodolist = tasks.filter(task => !task.isDone)
@@ -24,8 +34,6 @@ export const Todolist = (props: PropsType) => {
     // if (filter === 'completed') {
     // 	tasksForTodolist = tasks.filter(task => task.isDone)
     // }
-
-    const {title, tasks, filter, removeTask, changeFilter, addTask, changeTaskStatus, removeTodolist, todolistId} = props
 
     const [taskTitle, setTaskTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
