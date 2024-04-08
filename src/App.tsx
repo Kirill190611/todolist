@@ -2,6 +2,7 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import {useState} from "react";
 import {v1} from "uuid";
+import {Button} from "./Button";
 
 export type TaskType = {
 	id: string
@@ -85,6 +86,7 @@ function App() {
 
 	return (
 		<div className="App">
+
 			{todolists.map((tl) => {
 
 				const allTodolistTasks = tasks[tl.id]
@@ -111,6 +113,7 @@ function App() {
 					removeTodolist={removeTodolist}
 				/>
 			})}
+
 		</div>
 	);
 }
