@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Box from '@mui/material/Box';
+import {filterButtonContainerSX, getListItemSX} from "./Todolist.styles";
 
 type PropsType = {
     title: string
@@ -86,11 +88,14 @@ export const Todolist = (props: PropsType) => {
                                 updateTask(todolistId, task.id, title)
                             }
 
-                            return <ListItem key={task.id} className={task.isDone ? 'is-done' : ''}>
-                                <Checkbox checked={task.isDone}
-                                          onChange={changeTaskStatusHandler}/>
-                                <EditableSpan value={task.title}
-                                              onChange={changeTaskTitleHandler}/>
+                            return <ListItem key={task.id}
+                                             sx={getListItemSX(task.isDone)}>
+                                <div>
+                                    <Checkbox checked={task.isDone}
+                                              onChange={changeTaskStatusHandler}/>
+                                    <EditableSpan value={task.title}
+                                                  onChange={changeTaskTitleHandler}/>
+                                </div>
                                 <IconButton aria-label="delete"
                                             onClick={removeTaskHandler}>
                                     <DeleteIcon/>
@@ -99,7 +104,7 @@ export const Todolist = (props: PropsType) => {
                         })}
                     </List>
             }
-            <div>
+            <Box sx={filterButtonContainerSX}>
                 <Button variant={filter === 'all' ? "outlined" : "contained"}
                         onClick={() => changeFilterTasksHandler('all')}
                         color={"primary"}>All</Button>
@@ -109,7 +114,7 @@ export const Todolist = (props: PropsType) => {
                 <Button variant={filter === 'completed' ? "outlined" : "contained"}
                         onClick={() => changeFilterTasksHandler('completed')}
                         color={"primary"}>Completed</Button>
-            </div>
+            </Box>
         </div>
     )
 }

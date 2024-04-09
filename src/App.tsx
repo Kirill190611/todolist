@@ -5,13 +5,16 @@ import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import {filterButtonContainerSX} from "./Todolist.styles";
+import {MenuButton} from "./MenuButton";
+import {createTheme, ThemeProvider} from '@mui/material/styles'
+import Switch from '@mui/material/Switch';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export type TaskType = {
     id: string
@@ -31,7 +34,19 @@ export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
+type ThemeMode = 'dark' | 'light'
+
 function App() {
+    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+
+    const theme = createTheme({
+        palette: {
+            mode: themeMode === 'light' ? 'light' : 'dark',
+            primary: {
+                main: "#2d467c"
+            },
+        },
+    })
 
     let todolistID1 = v1()
     let todolistID2 = v1()
@@ -116,14 +131,24 @@ function App() {
             : tl))
     }
 
+    const changeModeHandler = () => {
+        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+    }
+
     return (
-        <div>
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
             <AppBar position="static" sx={{mb: "30px"}}>
-                <Toolbar>
+                <Toolbar sx={filterButtonContainerSX}>
                     <IconButton color="inherit">
                         <MenuIcon/>
                     </IconButton>
-                    <Button color="inherit">Login</Button>
+                    <div>
+                        <MenuButton background={theme.palette.primary.dark}>Login</MenuButton>
+                        <MenuButton background={theme.palette.primary.dark}>Logout</MenuButton>
+                        <MenuButton background={theme.palette.primary.dark}>FAQ</MenuButton>
+                        <Switch onChange={changeModeHandler}/>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Container fixed>
@@ -165,7 +190,7 @@ function App() {
                     })}
                 </Grid>
             </Container>
-        </div>
+        </ThemeProvider>
     );
 }
 
