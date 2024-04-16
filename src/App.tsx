@@ -16,6 +16,13 @@ import {createTheme, ThemeProvider} from '@mui/material/styles'
 import Switch from '@mui/material/Switch';
 import CssBaseline from '@mui/material/CssBaseline';
 import {addTaskAC, changeTaskStatusAC, removeTaskAC, tasksReducer, updateTaskAC} from "./model/tasks-reducer";
+import {
+    addTodolistAC,
+    changeFilterAC,
+    removeTodolistAC,
+    todolistsReducer,
+    updateTodolistAC
+} from "./model/todolists-reducer";
 
 export type TaskType = {
     id: string
@@ -52,7 +59,7 @@ function App() {
     let todolistID1 = v1()
     let todolistID2 = v1()
 
-    let [todolists, setTodolists] = useState<TodolistType[]>([
+    let [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
         {id: todolistID1, title: 'What to learn', filter: 'all'},
         {id: todolistID2, title: 'What to buy', filter: 'all'},
     ])
@@ -117,13 +124,15 @@ function App() {
     }
 
     const changeFilter = (filter: FilterValuesType, todolistId: string) => {
-        const newTodolists = todolists.map(tl => {
+        dispatchTodolists(changeFilterAC(filter, todolistId))
+        /*const newTodolists = todolists.map(tl => {
             return tl.id === todolistId ? {...tl, filter} : tl
         })
-        setTodolists(newTodolists)
+        setTodolists(newTodolists)*/
     }
 
     const removeTodolist = (todolistId: string) => {
+        dispatchTodolists(removeTodolistAC(todolistId))
         /*const newTodolists = todolists.filter(tl => tl.id !== todolistId)
         setTodolists(newTodolists)
 
@@ -132,6 +141,7 @@ function App() {
     }
 
     const addTodolist = (title: string) => {
+        dispatchTodolists(addTodolistAC(title))
         /*const todolistId = v1()
         const newTodolist: TodolistType = {
             id: todolistId,
@@ -143,6 +153,7 @@ function App() {
     }
 
     const updateTodolist = (todolistId: string, todolistTitle: string) => {
+        dispatchTodolists(updateTodolistAC(todolistId, todolistTitle))
         /*setTodolists(todolists.map(tl => tl.id === todolistId
             ? {...tl, title: todolistTitle}
             : tl))*/

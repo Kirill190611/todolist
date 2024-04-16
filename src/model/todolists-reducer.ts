@@ -103,12 +103,12 @@ export const updateTodolistAC = (id: string, title: string) => {
     } as const
 }
 
-export const changeFilterAC = (id: string, filter: FilterValuesType) => {
+export const changeFilterAC = (filter: FilterValuesType, id: string) => {
     return {
         type: 'CHANGE-TODOLIST-FILTER',
         payload: {
-            id,
             filter,
+            id,
         },
     } as const
 }
