@@ -27,10 +27,16 @@ export type ChangeTaskTitleType = {
     todolistId: string
 }
 
+export type AddNewTodolistType = {
+    type: 'ADD-NEW-TODOLIST'
+    newTitle: string
+}
+
 type TasksActionsType = RemoveTaskActionType
     | AddTaskActionType
     | ChangeTaskStatusType
     | ChangeTaskTitleType
+    | AddNewTodolistType
 export const tasksReducer = (state: TasksStateType, action: TasksActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
@@ -64,6 +70,13 @@ export const tasksReducer = (state: TasksStateType, action: TasksActionsType): T
                     state[action.todolistId].map(t => (t.id === action.id
                         ? {...t, title: action.newTitle}
                         : t))
+            }
+        }
+        case 'ADD-NEW-TODOLIST': {
+            let newTodolistId = v1();
+            return {
+                ...state,
+                [newTodolistId]: []
             }
         }
     }
@@ -106,5 +119,12 @@ export const changeTaskTitleAC = (id: string,
         id,
         newTitle,
         todolistId,
+    }
+}
+
+export const AddTodolistAC = (newTitle: string): AddNewTodolistType => {
+    return {
+        type: 'ADD-NEW-TODOLIST',
+        newTitle,
     }
 }
