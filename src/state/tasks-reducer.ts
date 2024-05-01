@@ -11,7 +11,7 @@ export type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>
 export type ChangeTaskTitleType = ReturnType<typeof changeTaskTitleAC>
 
 
-type TasksActionsType = RemoveTaskActionType
+export type TasksActionsType = RemoveTaskActionType
     | AddTaskActionType
     | ChangeTaskStatusType
     | ChangeTaskTitleType
