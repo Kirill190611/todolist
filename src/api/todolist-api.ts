@@ -19,6 +19,26 @@ type ResponseType<D = {}> = {
     data: D
 }
 
+type TasksResponse = {
+    items: TaskType[]
+    totalCount: number
+    error: string | null
+}
+
+type TaskType = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -37,13 +57,14 @@ export const todolistAPI = {
         )
     },
     getTodolists() {
-        return instance.get<TodolistType[]>(
-            'todo-lists',
-        )
+        return instance
+            .get<TodolistType[]>(
+                'todo-lists',
+            )
     },
     createTodolist(title: string) {
         return instance
-            .post<ResponseType<{item: TodolistType}>>(
+            .post<ResponseType<{ item: TodolistType }>>(
                 'todo-lists',
                 {
                     title
@@ -54,6 +75,36 @@ export const todolistAPI = {
         return instance
             .delete<ResponseType>(
                 `todo-lists/${todolistId}`
-                )
+            )
+    },
+    getTasks(todolistId: string) {
+        return instance
+            .get<TasksResponse>(
+                `todo-lists/${todolistId}/tasks`
+            )
+    },
+    createTask(todolistId: string, title: string) {
+        return instance
+            .post<TaskType[]>(
+                `todo-lists/${todolistId}/tasks`,
+                {
+                    title
+                },
+            )
+    },
+    updateTask(todolistId: string, taskId: string, title: string) {
+        return instance
+            .put<TaskType[]>(
+                `todo-lists/${todolistId}/tasks/${taskId}`,
+                {
+                    title
+                }
+            )
+    },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance
+            .delete<TaskType[]>(
+                `todo-lists/${todolistId}/tasks/${taskId}`
+            )
     }
 }
