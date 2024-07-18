@@ -38,4 +38,4 @@ function App() {
 
 export default App
 
-//Test
+//Additional practice with REST API (CRUD)
