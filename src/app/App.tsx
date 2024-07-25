@@ -38,4 +38,4 @@ function App() {
 
 export default App
 
-//Additional practice with REST API (CRUD)
+//Additional practice with thunk
