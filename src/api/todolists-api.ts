@@ -4,7 +4,7 @@ const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
-        'API-KEY': '5fc11a34-7258-4926-8c00-915edb4f940c'
+        'API-KEY': '6ec22dcd-9697-45a8-84cd-ebc1499fb4b9'
     }
 })
 
@@ -65,6 +65,13 @@ export enum TaskPriorities {
     Urgently = 3,
     Later = 4
 }
+
+export enum RESULT_CODE {
+    SUCCESS = 0,
+    ERROR = 1,
+    ERROR_RECAPTCHA = 2,
+}
+
 
 export type TaskType = {
     description: string
