@@ -16,11 +16,13 @@ import {Todolist} from './Todolist/Todolist'
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import {RequestStatusType} from "../../app/app-reducer";
 
 export const TodolistsList: React.FC = () => {
 
     const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)
+    const entityStatus = useAppSelector<RequestStatusType>(state => state.app.status)
 
     const dispatch = useAppDispatch()
 
@@ -82,12 +84,14 @@ export const TodolistsList: React.FC = () => {
                     return <Grid item key={tl.id}>
                         <Paper style={{padding: '10px'}}>
                             <Todolist
+                                todolist={tl}
                                 id={tl.id}
                                 title={tl.title}
                                 tasks={allTodolistTasks}
                                 removeTask={removeTask}
                                 changeFilter={changeFilter}
                                 addTask={addTask}
+                                entityStatus={entityStatus}
                                 changeTaskStatus={changeStatus}
                                 filter={tl.filter}
                                 removeTodolist={removeTodolist}
