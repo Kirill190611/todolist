@@ -9,8 +9,6 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import {useFormik} from "formik";
 
-//Todo: start from visited fields
-
 type FormikErrorType = {
     email?: string
     password?: string
@@ -42,6 +40,7 @@ export const Login = () => {
         },
         onSubmit: values => {
             alert(JSON.stringify(values))
+            formik.resetForm()
         },
     })
 
@@ -65,21 +64,16 @@ export const Login = () => {
                             <TextField
                                 label="Email"
                                 margin="normal"
-                                name="email"
-                                onChange={formik.handleChange}
-                                value={formik.values.email}
-                                onBlur={formik.handleBlur}
+                                {...formik.getFieldProps('email')}
                             />
-                            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                            {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
                             <TextField
                                 type="password"
                                 label="Password"
                                 margin="normal"
-                                name="password"
-                                onChange={formik.handleChange}
-                                value={formik.values.password}
+                                {...formik.getFieldProps('password')}
                             />
-                            {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+                            {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
                             <FormControlLabel
                                 label="Remember me"
                                 control={
