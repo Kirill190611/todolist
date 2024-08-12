@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
 import './App.css'
-import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useAppDispatch, useAppSelector} from './store'
 import {RequestStatusType} from './app-reducer'
 import AppBar from '@mui/material/AppBar';
