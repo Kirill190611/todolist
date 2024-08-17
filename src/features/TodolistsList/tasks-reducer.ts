@@ -13,7 +13,6 @@ import {
 import { Dispatch } from 'redux'
 import { AppRootStateType } from 'app/store'
 import {
-  setAppErrorAC,
   SetAppErrorActionType,
   setAppStatusAC,
   SetAppStatusActionType,
