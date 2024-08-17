@@ -1,17 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { authAPI, LoginParamsType } from 'api/todolists-api'
 import { AppThunk } from 'app/store'
-import {
-  SetAppErrorActionType,
-  setAppStatusAC,
-  SetAppStatusActionType,
-} from 'app/app-reducer'
+import {} from 'app/app-reducer'
 import {
   handleServerAppError,
   handleServerNetworkError,
 } from 'utils/error-utils'
-import { Dispatch } from 'redux'
-import App from 'app/App'
+import { setAppStatusAC } from 'app/_app-reducer'
 
 type InitialStateType = {
   isLoggedIn: boolean
