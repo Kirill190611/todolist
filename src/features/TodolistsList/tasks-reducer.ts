@@ -90,9 +90,13 @@ export const tasksSlice = createSlice({
         })
       })
   },
+  selectors: {
+    selectTasks: (state) => state,
+  },
 })
 
 export const { addTask, setTasks, removeTask, updateTask } = tasksSlice.actions
+export const { selectTasks } = tasksSlice.selectors
 
 // thunks
 export const fetchTasksTC =
