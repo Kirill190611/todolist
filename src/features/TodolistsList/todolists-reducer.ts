@@ -1,13 +1,9 @@
 import { todolistsAPI, TodolistType } from 'api/todolists-api'
 import { Dispatch } from 'redux'
-import {
-  RequestStatusType,
-  SetAppErrorActionType,
-  setAppStatusAC,
-  SetAppStatusActionType,
-} from 'app/app-reducer'
+import { RequestStatusType, setAppStatusAC } from 'app/app-reducer'
 import { handleServerNetworkError } from 'utils/error-utils'
 import { AppThunk } from 'app/store'
+import App from 'app/App'
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -111,8 +107,8 @@ export const fetchTodolistsTC = (): AppThunk => {
       })
   }
 }
-export const removeTodolistTC = (todolistId: string) => {
-  return (dispatch: ThunkDispatch) => {
+export const removeTodolistTC = (todolistId: string): AppThunk => {
+  return (dispatch) => {
     //изменим глобальный статус приложения, чтобы вверху полоса побежала
     dispatch(setAppStatusAC('loading'))
     //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
@@ -126,8 +122,8 @@ export const removeTodolistTC = (todolistId: string) => {
     })
   }
 }
-export const addTodolistTC = (title: string) => {
-  return (dispatch: ThunkDispatch) => {
+export const addTodolistTC = (title: string): AppThunk => {
+  return (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     todolistsAPI.createTodolist(title).then((res) => {
       dispatch(addTodolistAC(res.data.data.item))
@@ -135,8 +131,8 @@ export const addTodolistTC = (title: string) => {
     })
   }
 }
-export const changeTodolistTitleTC = (id: string, title: string) => {
-  return (dispatch: Dispatch<ActionsType>) => {
+export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
+  return (dispatch) => {
     todolistsAPI.updateTodolist(id, title).then((res) => {
       dispatch(changeTodolistTitleAC({ id: id, title: title }))
     })
@@ -159,6 +155,3 @@ export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType
   entityStatus: RequestStatusType
 }
-type ThunkDispatch = Dispatch<
-  ActionsType | SetAppStatusActionType | SetAppErrorActionType
->
