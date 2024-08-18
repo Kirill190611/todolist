@@ -61,6 +61,9 @@ export const todolistsSlice = createSlice({
       }))
     },
   },
+  selectors: {
+    selectTodolists: (state) => state,
+  },
 })
 
 export const {
@@ -71,6 +74,7 @@ export const {
   addTodolist,
   setTodolists,
 } = todolistsSlice.actions
+export const { selectTodolists } = todolistsSlice.selectors
 
 // thunks
 export const fetchTodolistsTC = (): AppThunk => {
