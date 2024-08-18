@@ -7,11 +7,11 @@ import {
   handleServerNetworkError,
 } from 'utils/error-utils'
 
-type InitialStateType = {
+type AuthInitialState = {
   isLoggedIn: boolean
 }
 
-const initialState: InitialStateType = {
+const initialState: AuthInitialState = {
   isLoggedIn: false,
 }
 
@@ -19,14 +19,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setIsLoggedInAC(state, action: PayloadAction<boolean>) {
+    setIsLoggedIn(state, action: PayloadAction<boolean>) {
       return { ...state, isLoggedIn: action.payload }
     },
   },
 })
 
 export const authReducer = authSlice.reducer
-export const { setIsLoggedInAC } = authSlice.actions
+export const { setIsLoggedIn } = authSlice.actions
 
 // thunks
 export const loginTC =
@@ -37,7 +37,7 @@ export const loginTC =
       .login(data)
       .then((res) => {
         if (res.data.resultCode === 0) {
-          dispatch(setIsLoggedInAC(true))
+          dispatch(setIsLoggedIn(true))
           dispatch(setAppStatusAC('succeeded'))
         } else {
           handleServerAppError(res.data, dispatch)
@@ -53,7 +53,7 @@ export const logoutTC = (): AppThunk => (dispatch) => {
     .logout()
     .then((res) => {
       if (res.data.resultCode === 0) {
-        dispatch(setIsLoggedInAC(false))
+        dispatch(setIsLoggedIn(false))
         dispatch(setAppStatusAC('succeeded'))
       } else {
         handleServerAppError(res.data, dispatch)
@@ -63,7 +63,3 @@ export const logoutTC = (): AppThunk => (dispatch) => {
       handleServerNetworkError(error, dispatch)
     })
 }
-
-//Todo: need to rename initialState to AuthInitialState;
-//Todo: need to delete type from type name;
-//Todo: need to delete AC from Actions;
