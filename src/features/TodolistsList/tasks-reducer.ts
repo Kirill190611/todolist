@@ -18,7 +18,7 @@ import {
   handleServerNetworkError,
 } from 'utils/error-utils'
 
-export type TasksStateType = {
+export type TasksState = {
   [key: string]: Array<TaskType>
 }
 
@@ -31,13 +31,13 @@ export type UpdateDomainTaskModelType = {
   deadline?: string
 }
 
-const initialState: TasksStateType = {}
+const initialState: TasksState = {}
 
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    removeTaskAC(
+    removeTask(
       state,
       action: PayloadAction<{
         taskId: string
@@ -51,7 +51,7 @@ export const tasksSlice = createSlice({
         ),
       }
     },
-    addTaskAC(state, action: PayloadAction<TaskType>) {
+    addTask(state, action: PayloadAction<TaskType>) {
       return {
         ...state,
         [action.payload.todoListId]: [
@@ -60,7 +60,7 @@ export const tasksSlice = createSlice({
         ],
       }
     },
-    updateTaskAC(
+    updateTask(
       state,
       action: PayloadAction<{
         taskId: string
@@ -78,7 +78,7 @@ export const tasksSlice = createSlice({
         ),
       }
     },
-    setTasksAC(
+    setTasks(
       state,
       action: PayloadAction<{
         tasks: Array<TaskType>
@@ -109,8 +109,7 @@ export const tasksSlice = createSlice({
 })
 
 export const tasksReducer = tasksSlice.reducer
-export const { addTaskAC, setTasksAC, removeTaskAC, updateTaskAC } =
-  tasksSlice.actions
+export const { addTask, setTasks, removeTask, updateTask } = tasksSlice.actions
 
 // thunks
 export const fetchTasksTC =
@@ -119,7 +118,7 @@ export const fetchTasksTC =
     dispatch(setAppStatus('loading'))
     todolistsAPI.getTasks(todolistId).then((res) => {
       const tasks = res.data.items
-      dispatch(setTasksAC({ tasks: tasks, todolistId: todolistId }))
+      dispatch(setTasks({ tasks: tasks, todolistId: todolistId }))
       dispatch(setAppStatus('succeeded'))
     })
   }
@@ -127,7 +126,7 @@ export const removeTaskTC =
   (taskId: string, todolistId: string): AppThunk =>
   (dispatch) => {
     todolistsAPI.deleteTask(todolistId, taskId).then((res) => {
-      const action = removeTaskAC({ taskId: taskId, todolistId: todolistId })
+      const action = removeTask({ taskId: taskId, todolistId: todolistId })
       dispatch(action)
     })
   }
@@ -140,7 +139,7 @@ export const addTaskTC =
       .then((res) => {
         if (res.data.resultCode === 0) {
           const task = res.data.data.item
-          const action = addTaskAC(task)
+          const action = addTask(task)
           dispatch(action)
           dispatch(setAppStatus('succeeded'))
         } else {
@@ -180,7 +179,7 @@ export const updateTaskTC =
       .updateTask(todolistId, taskId, apiModel)
       .then((res) => {
         if (res.data.resultCode === 0) {
-          const action = updateTaskAC({
+          const action = updateTask({
             taskId: taskId,
             model: domainModel,
             todolistId: todolistId,

@@ -1,16 +1,16 @@
 import {
-  addTaskAC,
-  removeTaskAC,
-  setTasksAC,
+  addTask,
+  removeTask,
+  setTasks,
   tasksReducer,
-  TasksStateType,
-  updateTaskAC,
+  TasksState,
+  updateTask,
 } from './tasks-reducer'
 
 import { addTodolist, removeTodolist, setTodolists } from './todolists-reducer'
 import { TaskPriorities, TaskStatuses } from 'api/todolists-api'
 
-let startState: TasksStateType = {}
+let startState: TasksState = {}
 beforeEach(() => {
   startState = {
     todolistId1: [
@@ -93,7 +93,7 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-  const action = removeTaskAC({ taskId: '2', todolistId: 'todolistId2' })
+  const action = removeTask({ taskId: '2', todolistId: 'todolistId2' })
 
   const endState = tasksReducer(startState, action)
 
@@ -102,8 +102,8 @@ test('correct task should be deleted from correct array', () => {
   expect(endState['todolistId2'].every((t) => t.id != '2')).toBeTruthy()
 })
 test('correct task should be added to correct array', () => {
-  //const action = addTaskAC("juce", "todolistId2");
-  const action = addTaskAC({
+  //const action = addTask("juce", "todolistId2");
+  const action = addTask({
     todoListId: 'todolistId2',
     title: 'juce',
     status: TaskStatuses.New,
@@ -125,7 +125,7 @@ test('correct task should be added to correct array', () => {
   expect(endState['todolistId2'][0].status).toBe(TaskStatuses.New)
 })
 test('status of specified task should be changed', () => {
-  const action = updateTaskAC({
+  const action = updateTask({
     taskId: '2',
     model: { status: TaskStatuses.New },
     todolistId: 'todolistId2',
@@ -137,7 +137,7 @@ test('status of specified task should be changed', () => {
   expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
 })
 test('title of specified task should be changed', () => {
-  const action = updateTaskAC({
+  const action = updateTask({
     taskId: '2',
     model: { title: 'yogurt' },
     todolistId: 'todolistId2',
@@ -194,7 +194,7 @@ test('empty arrays should be added when we set todolists', () => {
   expect(endState['2']).toBeDefined()
 })
 test('tasks should be added for todolist', () => {
-  const action = setTasksAC({
+  const action = setTasks({
     tasks: startState['todolistId1'],
     todolistId: 'todolistId1',
   })
