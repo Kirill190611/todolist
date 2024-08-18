@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux'
 import { AppRootStateType } from 'app/store'
 import {
   addTodolistTC,
-  changeTodolistFilterAC,
+  changeTodolistFilter,
   changeTodolistTitleTC,
   fetchTodolistsTC,
   FilterValuesType,
   removeTodolistTC,
-  TodolistDomainType,
+  TodolistDomain,
 } from './todolists-reducer'
 import {
   addTaskTC,
@@ -28,7 +28,7 @@ type PropsType = {
 }
 
 export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
-  const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
+  const todolists = useSelector<AppRootStateType, Array<TodolistDomain>>(
     (state) => state.todolists
   )
   const tasks = useSelector<AppRootStateType, TasksStateType>(
@@ -80,7 +80,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     value: FilterValuesType,
     todolistId: string
   ) {
-    const action = changeTodolistFilterAC({ id: todolistId, filter: value })
+    const action = changeTodolistFilter({ id: todolistId, filter: value })
     dispatch(action)
   }, [])
 

@@ -5,27 +5,27 @@ import { AppThunk } from 'app/store'
 import { handleServerNetworkError } from 'utils/error-utils'
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
-export type TodolistDomainType = TodolistType & {
+export type TodolistDomain = TodolistType & {
   filter: FilterValuesType
   entityStatus: RequestStatusType
 }
 
-const initialState: Array<TodolistDomainType> = []
+const initialState: Array<TodolistDomain> = []
 
 export const todolistsSlice = createSlice({
   name: 'todolists',
   initialState,
   reducers: {
-    removeTodolistAC(state, action: PayloadAction<string>) {
+    removeTodolist(state, action: PayloadAction<string>) {
       return state.filter((tl) => tl.id != action.payload)
     },
-    addTodolistAC(state, action: PayloadAction<TodolistType>) {
+    addTodolist(state, action: PayloadAction<TodolistType>) {
       return [
         { ...action.payload, filter: 'all', entityStatus: 'idle' },
         ...state,
       ]
     },
-    changeTodolistTitleAC(
+    changeTodolistTitle(
       state,
       action: PayloadAction<{
         id: string
@@ -38,7 +38,7 @@ export const todolistsSlice = createSlice({
           : tl
       )
     },
-    changeTodolistFilterAC(
+    changeTodolistFilter(
       state,
       action: PayloadAction<{
         id: string
@@ -51,7 +51,7 @@ export const todolistsSlice = createSlice({
           : tl
       )
     },
-    changeTodolistEntityStatusAC(
+    changeTodolistEntityStatus(
       state,
       action: PayloadAction<{
         id: string
@@ -64,7 +64,7 @@ export const todolistsSlice = createSlice({
           : tl
       )
     },
-    setTodolistsAC(state, action: PayloadAction<Array<TodolistType>>) {
+    setTodolists(state, action: PayloadAction<Array<TodolistType>>) {
       return action.payload.map((tl) => ({
         ...tl,
         filter: 'all',
@@ -76,12 +76,12 @@ export const todolistsSlice = createSlice({
 
 export const todolistsReducer = todolistsSlice.reducer
 export const {
-  changeTodolistTitleAC,
-  changeTodolistFilterAC,
-  changeTodolistEntityStatusAC,
-  removeTodolistAC,
-  addTodolistAC,
-  setTodolistsAC,
+  changeTodolistTitle,
+  changeTodolistFilter,
+  changeTodolistEntityStatus,
+  removeTodolist,
+  addTodolist,
+  setTodolists,
 } = todolistsSlice.actions
 
 // thunks
@@ -91,7 +91,7 @@ export const fetchTodolistsTC = (): AppThunk => {
     todolistsAPI
       .getTodolists()
       .then((res) => {
-        dispatch(setTodolistsAC(res.data))
+        dispatch(setTodolists(res.data))
         dispatch(setAppStatus('succeeded'))
       })
       .catch((error) => {
@@ -104,11 +104,9 @@ export const removeTodolistTC = (todolistId: string): AppThunk => {
     //изменим глобальный статус приложения, чтобы вверху полоса побежала
     dispatch(setAppStatus('loading'))
     //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
-    dispatch(
-      changeTodolistEntityStatusAC({ id: todolistId, status: 'loading' })
-    )
+    dispatch(changeTodolistEntityStatus({ id: todolistId, status: 'loading' }))
     todolistsAPI.deleteTodolist(todolistId).then((res) => {
-      dispatch(removeTodolistAC(todolistId))
+      dispatch(removeTodolist(todolistId))
       //скажем глобально приложению, что асинхронная операция завершена
       dispatch(setAppStatus('succeeded'))
     })
@@ -118,7 +116,7 @@ export const addTodolistTC = (title: string): AppThunk => {
   return (dispatch) => {
     dispatch(setAppStatus('loading'))
     todolistsAPI.createTodolist(title).then((res) => {
-      dispatch(addTodolistAC(res.data.data.item))
+      dispatch(addTodolist(res.data.data.item))
       dispatch(setAppStatus('succeeded'))
     })
   }
@@ -126,7 +124,7 @@ export const addTodolistTC = (title: string): AppThunk => {
 export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
   return (dispatch) => {
     todolistsAPI.updateTodolist(id, title).then((res) => {
-      dispatch(changeTodolistTitleAC({ id: id, title: title }))
+      dispatch(changeTodolistTitle({ id: id, title: title }))
     })
   }
 }
