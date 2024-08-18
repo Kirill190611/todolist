@@ -63,7 +63,6 @@ export const todolistsSlice = createSlice({
   },
 })
 
-export const todolistsReducer = todolistsSlice.reducer
 export const {
   changeTodolistTitle,
   changeTodolistFilter,

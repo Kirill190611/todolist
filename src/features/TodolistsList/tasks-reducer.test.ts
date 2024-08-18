@@ -2,7 +2,7 @@ import {
   addTask,
   removeTask,
   setTasks,
-  tasksReducer,
+  tasksSlice,
   TasksState,
   updateTask,
 } from './tasks-reducer'
@@ -11,6 +11,7 @@ import { addTodolist, removeTodolist, setTodolists } from './todolists-reducer'
 import { TaskPriorities, TaskStatuses } from 'api/todolists-api'
 
 let startState: TasksState = {}
+const tasksReducer = tasksSlice.reducer
 beforeEach(() => {
   startState = {
     todolistId1: [

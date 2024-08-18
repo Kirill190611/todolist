@@ -25,7 +25,6 @@ export const authSlice = createSlice({
   },
 })
 
-export const authReducer = authSlice.reducer
 export const { setIsLoggedIn } = authSlice.actions
 
 // thunks

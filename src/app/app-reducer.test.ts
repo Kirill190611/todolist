@@ -1,11 +1,12 @@
 import {
-  appReducer,
+  appSlice,
   AppInitialState,
   setAppError,
   setAppStatus,
 } from './app-reducer'
 
 let startState: AppInitialState
+const appReducer = appSlice.reducer
 
 beforeEach(() => {
   startState = {
