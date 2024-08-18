@@ -1,5 +1,5 @@
 import { todolistsAPI, TodolistType } from 'api/todolists-api'
-import { RequestStatusType, setAppStatusAC } from 'app/app-reducer'
+import { RequestStatusType, setAppStatus } from 'app/app-reducer'
 import { handleServerNetworkError } from 'utils/error-utils'
 import { AppThunk } from 'app/store'
 
@@ -93,12 +93,12 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) =>
 // thunks
 export const fetchTodolistsTC = (): AppThunk => {
   return (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatus('loading'))
     todolistsAPI
       .getTodolists()
       .then((res) => {
         dispatch(setTodolistsAC(res.data))
-        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppStatus('succeeded'))
       })
       .catch((error) => {
         handleServerNetworkError(error, dispatch)
@@ -108,7 +108,7 @@ export const fetchTodolistsTC = (): AppThunk => {
 export const removeTodolistTC = (todolistId: string): AppThunk => {
   return (dispatch) => {
     //изменим глобальный статус приложения, чтобы вверху полоса побежала
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatus('loading'))
     //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
     dispatch(
       changeTodolistEntityStatusAC({ id: todolistId, status: 'loading' })
@@ -116,16 +116,16 @@ export const removeTodolistTC = (todolistId: string): AppThunk => {
     todolistsAPI.deleteTodolist(todolistId).then((res) => {
       dispatch(removeTodolistAC(todolistId))
       //скажем глобально приложению, что асинхронная операция завершена
-      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppStatus('succeeded'))
     })
   }
 }
 export const addTodolistTC = (title: string): AppThunk => {
   return (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatus('loading'))
     todolistsAPI.createTodolist(title).then((res) => {
       dispatch(addTodolistAC(res.data.data.item))
-      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppStatus('succeeded'))
     })
   }
 }

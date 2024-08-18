@@ -24,21 +24,20 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setAppErrorAC(state, action: PayloadAction<string | null>) {
+    setAppError(state, action: PayloadAction<string | null>) {
       return { ...state, error: action.payload }
     },
-    setAppStatusAC(state, action: PayloadAction<RequestStatusType>) {
+    setAppStatus(state, action: PayloadAction<RequestStatusType>) {
       return { ...state, status: action.payload }
     },
-    setAppInitializedAC(state, action: PayloadAction<boolean>) {
+    setAppInitialized(state, action: PayloadAction<boolean>) {
       return { ...state, isInitialized: action.payload }
     },
   },
 })
 
 export const appReducer = appSlice.reducer
-export const { setAppErrorAC, setAppInitializedAC, setAppStatusAC } =
-  appSlice.actions
+export const { setAppError, setAppInitialized, setAppStatus } = appSlice.actions
 
 //thunks
 export const initializeAppTC = (): AppThunk => (dispatch) => {
@@ -48,6 +47,6 @@ export const initializeAppTC = (): AppThunk => (dispatch) => {
     } else {
     }
 
-    dispatch(setAppInitializedAC(true))
+    dispatch(setAppInitialized(true))
   })
 }
