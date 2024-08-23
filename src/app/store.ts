@@ -1,39 +1,27 @@
-import { tasksSlice } from 'features/TodolistsList/tasks-reducer'
-import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { appSlice } from './app-reducer'
-import {
-  combineReducers,
-  configureStore,
-  UnknownAction,
-} from '@reduxjs/toolkit'
-import { authSlice } from 'features/Login/auth-reducer'
-import { todolistsSlice } from 'features/TodolistsList/todolists-reducer'
+import { tasksReducer } from "features/TodolistsList/tasks.reducer";
+import { todolistsReducer } from "features/TodolistsList/todolists.reducer";
+import { AnyAction, combineReducers } from "redux";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { appReducer } from "app/app.reducer";
+import { authReducer } from "features/auth/auth.reducer";
+import { configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
-  [tasksSlice.reducerPath]: tasksSlice.reducer,
-  [todolistsSlice.reducerPath]: todolistsSlice.reducer,
-  [appSlice.reducerPath]: appSlice.reducer,
-  [authSlice.reducerPath]: authSlice.reducer,
-})
+  tasks: tasksReducer,
+  todolists: todolistsReducer,
+  app: appReducer,
+  auth: authReducer,
+});
 
-// ❗старая запись, с новыми версиями не работает
-//  const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
-export const store = configureStore({ reducer: rootReducer })
+export const store = configureStore({
+  reducer: rootReducer,
+});
 
-export type AppRootStateType = ReturnType<typeof store.getState>
+export type AppRootStateType = ReturnType<typeof rootReducer>;
 
-// ❗ UnknownAction вместо AnyAction
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  AppRootStateType,
-  unknown,
-  UnknownAction
->
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AnyAction>;
 
-// export type AppDispatch = typeof store.dispatch
-// ❗ UnknownAction вместо AnyAction
-export type AppDispatch = ThunkDispatch<
-  AppRootStateType,
-  unknown,
-  UnknownAction
->
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>;
+
+// @ts-ignore
+window.store = store;
