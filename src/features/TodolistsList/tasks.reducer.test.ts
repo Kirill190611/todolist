@@ -1,4 +1,5 @@
 import {
+  fetchTasksTC,
   tasksActions,
   tasksReducer,
   TasksStateType,
@@ -204,11 +205,21 @@ test('empty arrays should be added when we set todolists', () => {
   expect(endState['2']).toBeDefined()
 })
 
-/*test('tasks should be added for todolist', () => {
-  const action = tasksActions.setTasks({
-    tasks: startState['todolistId1'],
-    todolistId: 'todolistId1',
-  })
+type TestThunkActionM<T extends (...args: any) => any> = Omit<
+  ReturnType<T>,
+  'meta'
+>
+
+test('tasks should be added for todolist', () => {
+  type Action = TestThunkActionM<typeof fetchTasksTC.fulfilled>
+
+  const action: Action = {
+    type: fetchTasksTC.fulfilled.type,
+    payload: {
+      tasks: startState['todolistId1'],
+      todolistId: 'todolistId1',
+    },
+  }
 
   const endState = tasksReducer(
     {
@@ -220,4 +231,4 @@ test('empty arrays should be added when we set todolists', () => {
 
   expect(endState['todolistId1'].length).toBe(3)
   expect(endState['todolistId2'].length).toBe(0)
-})*/
+})
