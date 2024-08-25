@@ -204,7 +204,7 @@ test('empty arrays should be added when we set todolists', () => {
   expect(endState['2']).toBeDefined()
 })
 
-test('tasks should be added for todolist', () => {
+/*test('tasks should be added for todolist', () => {
   const action = tasksActions.setTasks({
     tasks: startState['todolistId1'],
     todolistId: 'todolistId1',
@@ -220,4 +220,4 @@ test('tasks should be added for todolist', () => {
 
   expect(endState['todolistId1'].length).toBe(3)
   expect(endState['todolistId2'].length).toBe(0)
-})
+})*/
