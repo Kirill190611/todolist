@@ -75,10 +75,16 @@ export const tasksActions = slice.actions
 
 export const fetchTasksTC = createAsyncThunk(
   'tasks/fetch-task',
-  async (todolistId: string) => {
-    const res = await todolistsAPI.getTasks(todolistId)
-    const tasks = res.data.items
-    return { tasks, todolistId }
+  async (todolistId: string, ThunkAPI) => {
+    const { rejectWithValue, dispatch } = ThunkAPI
+    try {
+      const res = await todolistsAPI.getTasks(todolistId)
+      const tasks = res.data.items
+      return { tasks, todolistId }
+    } catch (e: any) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    }
   }
 )
 
