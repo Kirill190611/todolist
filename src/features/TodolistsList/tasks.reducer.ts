@@ -10,7 +10,6 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from 'utils/error-utils'
-import { appActions } from 'app/app.reducer'
 import { todolistsActions } from 'features/TodolistsList/todolists.reducer'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { clearTasksAndTodolists } from 'common/actions/common.actions'
