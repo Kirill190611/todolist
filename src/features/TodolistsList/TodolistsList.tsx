@@ -59,7 +59,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   ) {
     const thunk = updateTaskTC({
       taskId: id,
-      domainModel: { status },
+      model: { status },
       todolistId: todolistId,
     })
     dispatch(thunk)
@@ -72,7 +72,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   ) {
     const thunk = updateTaskTC({
       taskId: id,
-      domainModel: { title: newTitle },
+      model: { title: newTitle },
       todolistId: todolistId,
     })
     dispatch(thunk)
