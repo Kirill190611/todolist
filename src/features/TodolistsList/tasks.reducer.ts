@@ -92,6 +92,31 @@ export const fetchTasksTC = createAppAsyncThunk<
   }
 })
 
+export const addTaskTC = createAppAsyncThunk<
+  void,
+  {
+    todolistId: string
+    title: string
+  }
+>('tasks/add-task', ({ todolistId, title }, thunkAPI) => {
+  const { dispatch } = thunkAPI
+  dispatch(appActions.setAppStatus({ status: 'loading' }))
+  todolistsAPI
+    .createTask(todolistId, title)
+    .then((res) => {
+      if (res.data.resultCode === 0) {
+        const task = res.data.data.item
+        dispatch(tasksActions.addTask({ task }))
+        dispatch(appActions.setAppStatus({ status: 'succeeded' }))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    })
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch)
+    })
+})
+
 // thunks
 export const removeTaskTC =
   (taskId: string, todolistId: string): AppThunk =>
@@ -101,25 +126,6 @@ export const removeTaskTC =
     })
   }
 
-export const addTaskTC =
-  (title: string, todolistId: string): AppThunk =>
-  (dispatch) => {
-    dispatch(appActions.setAppStatus({ status: 'loading' }))
-    todolistsAPI
-      .createTask(todolistId, title)
-      .then((res) => {
-        if (res.data.resultCode === 0) {
-          const task = res.data.data.item
-          dispatch(tasksActions.addTask({ task }))
-          dispatch(appActions.setAppStatus({ status: 'succeeded' }))
-        } else {
-          handleServerAppError(res.data, dispatch)
-        }
-      })
-      .catch((error) => {
-        handleServerNetworkError(error, dispatch)
-      })
-  }
 export const updateTaskTC =
   (
     taskId: string,
