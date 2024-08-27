@@ -29,10 +29,6 @@ const slice = createSlice({
       const index = tasks.findIndex((t) => t.id === action.payload.taskId)
       if (index !== -1) tasks.splice(index, 1)
     },
-    addTask: (state, action: PayloadAction<{ task: TaskType }>) => {
-      const tasks = state[action.payload.task.todoListId]
-      tasks.unshift(action.payload.task)
-    },
     updateTask: (
       state,
       action: PayloadAction<{
@@ -67,6 +63,10 @@ const slice = createSlice({
       .addCase(fetchTasksTC.fulfilled, (state, action) => {
         state[action.payload.todolistId] = action.payload.tasks
       })
+      .addCase(addTaskTC.fulfilled, (state, action) => {
+        const tasks = state[action.payload.task.todoListId]
+        tasks.unshift(action.payload.task)
+      })
   },
 })
 
@@ -79,12 +79,10 @@ export const fetchTasksTC = createAppAsyncThunk<
     todolistId: string
   },
   string
->('tasks/fetch-task', async (todolistId, ThunkAPI) => {
-  const { rejectWithValue, dispatch } = ThunkAPI
+>('tasks/fetch-task', async (todolistId, { rejectWithValue, dispatch }) => {
   try {
     const res = await todolistsAPI.getTasks(todolistId)
-    const tasks = res.data.items
-    return { tasks, todolistId }
+    return { tasks: res.data.items, todolistId }
   } catch (e: any) {
     handleServerNetworkError(e, dispatch)
     return rejectWithValue(null)
@@ -92,25 +90,30 @@ export const fetchTasksTC = createAppAsyncThunk<
 })
 
 export const addTaskTC = createAppAsyncThunk<
-  void,
+  {
+    task: TaskType
+  },
   {
     todolistId: string
     title: string
   }
->('tasks/add-task', async ({ todolistId, title }, thunkAPI) => {
-  const { dispatch } = thunkAPI
-  try {
-    const res = await todolistsAPI.createTask(todolistId, title)
-    if (res.data.resultCode === 0) {
-      const task = res.data.data.item
-      dispatch(tasksActions.addTask({ task }))
-    } else {
-      handleServerAppError(res.data, dispatch)
+>(
+  'tasks/add-task',
+  async ({ todolistId, title }, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await todolistsAPI.createTask(todolistId, title)
+      if (res.data.resultCode === 0) {
+        return { task: res.data.data.item }
+      } else {
+        handleServerAppError(res.data, dispatch)
+        return rejectWithValue(null)
+      }
+    } catch (e: any) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
     }
-  } catch (e: any) {
-    handleServerNetworkError(e, dispatch)
   }
-})
+)
 
 // thunks
 export const removeTaskTC =
