@@ -116,15 +116,15 @@ export const removeTaskTC =
     })
   }
 
-type UpdateTaskThunk = {
+type UpdateTaskModel = {
   taskId: string
   model: UpdateDomainTaskModelType
   todolistId: string
 }
 
 export const updateTaskTC = createAppAsyncThunk<
-  UpdateTaskThunk,
-  UpdateTaskThunk
+  UpdateTaskModel,
+  UpdateTaskModel
 >(
   'tasks/update-task',
   async (
