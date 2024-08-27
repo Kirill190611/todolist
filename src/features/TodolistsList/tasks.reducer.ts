@@ -3,7 +3,6 @@ import {
   TaskStatuses,
   TaskType,
   todolistsAPI,
-  UpdateTaskModelType,
 } from 'api/todolists-api'
 import { AppThunk } from 'app/store'
 import {
