@@ -73,6 +73,7 @@ const slice = createSlice({
 export const tasksReducer = slice.reducer
 export const tasksActions = slice.actions
 
+// thunks
 export const fetchTasksTC = createAppAsyncThunk<
   {
     tasks: TaskType[]
@@ -115,7 +116,6 @@ export const addTaskTC = createAppAsyncThunk<
   }
 )
 
-// thunks
 export const removeTaskTC =
   (taskId: string, todolistId: string): AppThunk =>
   (dispatch) => {
@@ -124,12 +124,64 @@ export const removeTaskTC =
     })
   }
 
-export const updateTaskTC =
-  (
-    taskId: string,
-    domainModel: UpdateDomainTaskModelType,
+export const updateTaskTC = createAppAsyncThunk<
+  void,
+  {
+    taskId: string
+    domainModel: UpdateDomainTaskModelType
     todolistId: string
-  ): AppThunk =>
+  }
+>(
+  'tasks/update-task',
+  (
+    { taskId, todolistId, domainModel },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    const state = getState()
+    const task = state.tasks[todolistId].find((t) => t.id === taskId)
+    if (!task) {
+      //throw new Error("task not found in the state");
+      console.warn('task not found in the state')
+      return
+    }
+
+    const apiModel: UpdateTaskModelType = {
+      deadline: task.deadline,
+      description: task.description,
+      priority: task.priority,
+      startDate: task.startDate,
+      title: task.title,
+      status: task.status,
+      ...domainModel,
+    }
+
+    todolistsAPI
+      .updateTask(todolistId, taskId, apiModel)
+      .then((res) => {
+        if (res.data.resultCode === 0) {
+          dispatch(
+            tasksActions.updateTask({ taskId, model: domainModel, todolistId })
+          )
+        } else {
+          handleServerAppError(res.data, dispatch)
+        }
+      })
+      .catch((error) => {
+        handleServerNetworkError(error, dispatch)
+      })
+  }
+)
+
+export const _updateTaskTC =
+  ({
+    taskId,
+    domainModel,
+    todolistId,
+  }: {
+    taskId: string
+    domainModel: UpdateDomainTaskModelType
+    todolistId: string
+  }): AppThunk =>
   (dispatch, getState) => {
     const state = getState()
     const task = state.tasks[todolistId].find((t) => t.id === taskId)
