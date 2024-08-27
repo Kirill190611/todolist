@@ -2,7 +2,11 @@ import { Dispatch } from 'redux'
 import { authAPI } from 'api/todolists-api'
 import { authActions } from 'features/auth/auth.reducer'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { addTaskTC, fetchTasksTC } from 'features/TodolistsList/tasks.reducer'
+import {
+  addTaskTC,
+  fetchTasksTC,
+  updateTaskTC,
+} from 'features/TodolistsList/tasks.reducer'
 
 const initialState = {
   status: 'idle' as RequestStatusType,
@@ -45,6 +49,12 @@ const slice = createSlice({
         state.status = 'loading'
       })
       .addCase(addTaskTC.fulfilled, (state) => {
+        state.status = 'succeeded'
+      })
+      .addCase(updateTaskTC.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(updateTaskTC.fulfilled, (state) => {
         state.status = 'succeeded'
       })
   },
