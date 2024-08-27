@@ -98,23 +98,19 @@ export const addTaskTC = createAppAsyncThunk<
     todolistId: string
     title: string
   }
->('tasks/add-task', ({ todolistId, title }, thunkAPI) => {
+>('tasks/add-task', async ({ todolistId, title }, thunkAPI) => {
   const { dispatch } = thunkAPI
-  dispatch(appActions.setAppStatus({ status: 'loading' }))
-  todolistsAPI
-    .createTask(todolistId, title)
-    .then((res) => {
-      if (res.data.resultCode === 0) {
-        const task = res.data.data.item
-        dispatch(tasksActions.addTask({ task }))
-        dispatch(appActions.setAppStatus({ status: 'succeeded' }))
-      } else {
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
+  try {
+    const res = await todolistsAPI.createTask(todolistId, title)
+    if (res.data.resultCode === 0) {
+      const task = res.data.data.item
+      dispatch(tasksActions.addTask({ task }))
+    } else {
+      handleServerAppError(res.data, dispatch)
+    }
+  } catch (e: any) {
+    handleServerNetworkError(e, dispatch)
+  }
 })
 
 // thunks
