@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { authAPI } from 'common'
+import { authAPI } from 'features/auth/auth-api'
 import { authActions } from 'features/auth/auth.reducer'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {

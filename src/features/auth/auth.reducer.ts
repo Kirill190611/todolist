@@ -1,5 +1,4 @@
 import {
-  authAPI,
   LoginParamsType,
   handleServerAppError,
   handleServerNetworkError,
@@ -8,6 +7,7 @@ import {
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from 'app/store'
 import { appActions } from 'app/app.reducer'
+import { authAPI } from 'features/auth/auth-api'
 
 const slice = createSlice({
   name: 'auth',
