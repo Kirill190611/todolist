@@ -5,7 +5,7 @@ import {
   todolistsReducer,
 } from 'features/TodolistsList/todolists.reducer'
 import { v1 } from 'uuid'
-import { TodolistType } from 'api/todolists-api'
+import { TodolistType } from 'common'
 import { RequestStatusType } from 'app/app.reducer'
 
 let todolistId1: string

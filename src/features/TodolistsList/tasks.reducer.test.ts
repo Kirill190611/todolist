@@ -4,7 +4,7 @@ import {
   tasksReducer,
   TasksStateType,
 } from 'features/TodolistsList/tasks.reducer'
-import { TaskPriorities, TaskStatuses } from 'api/todolists-api'
+import { TaskPriorities, TaskStatuses } from 'common'
 import { todolistsActions } from 'features/TodolistsList/todolists.reducer'
 
 let startState: TasksStateType = {}

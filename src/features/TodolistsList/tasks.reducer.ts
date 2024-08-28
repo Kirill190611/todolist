@@ -3,16 +3,16 @@ import {
   TaskStatuses,
   TaskType,
   todolistsAPI,
-} from 'api/todolists-api'
+} from 'common/api/todolists-api'
 import { AppThunk } from 'app/store'
 import {
   handleServerAppError,
   handleServerNetworkError,
-} from 'utils/error-utils'
+  clearTasksAndTodolists,
+} from 'common'
 import { todolistsActions } from 'features/TodolistsList/todolists.reducer'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { clearTasksAndTodolists } from 'common/actions/common.actions'
-import { createAppAsyncThunk } from 'hooks/use-app-async-thunk'
+import { createAppAsyncThunk } from 'common/hooks/use-app-async-thunk'
 
 const initialState: TasksStateType = {}
 
