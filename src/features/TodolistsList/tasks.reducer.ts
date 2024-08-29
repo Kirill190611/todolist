@@ -10,7 +10,6 @@ import {
   addTodolistTC,
   fetchTodolistsTC,
   removeTodolistTC,
-  todolistsActions,
 } from 'features/TodolistsList/todolists.reducer'
 import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from 'common/hooks/use-app-async-thunk'
