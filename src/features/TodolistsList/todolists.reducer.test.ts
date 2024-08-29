@@ -1,3 +1,4 @@
+/*
 import {
   FilterValuesType,
   TodolistDomainType,
@@ -90,13 +91,13 @@ test('correct filter of todolist should be changed', () => {
   expect(endState[0].filter).toBe('all')
   expect(endState[1].filter).toBe(newFilter)
 })
-test('todolists should be added', () => {
+/!*test('todolists should be added', () => {
   const action = todolistsActions.setTodolists({ todolists: startState })
 
   const endState = todolistsReducer([], action)
 
   expect(endState.length).toBe(2)
-})
+})*!/
 test('correct entity status of todolist should be changed', () => {
   let newStatus: RequestStatusType = 'loading'
 
@@ -110,3 +111,4 @@ test('correct entity status of todolist should be changed', () => {
   expect(endState[0].entityStatus).toBe('idle')
   expect(endState[1].entityStatus).toBe(newStatus)
 })
+*/

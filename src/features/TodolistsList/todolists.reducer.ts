@@ -2,6 +2,8 @@ import {
   TodolistType,
   handleServerNetworkError,
   clearTasksAndTodolists,
+  createAppAsyncThunk,
+  handleServerAppError,
 } from 'common'
 import { appActions, RequestStatusType } from 'app/app.reducer'
 import { AppThunk } from 'app/store'
@@ -54,22 +56,19 @@ const slice = createSlice({
         todo.entityStatus = action.payload.entityStatus
       }
     },
-    setTodolists: (
-      state,
-      action: PayloadAction<{ todolists: TodolistType[] }>
-    ) => {
-      return action.payload.todolists.map((tl) => ({
-        ...tl,
-        filter: 'all',
-        entityStatus: 'idle',
-      }))
-      // return action.payload.forEach(t => ({...t, filter: 'active', entityStatus: 'idle'}))
-    },
   },
   extraReducers: (builder) => {
-    builder.addCase(clearTasksAndTodolists, () => {
-      return []
-    })
+    builder
+      .addCase(clearTasksAndTodolists, () => {
+        return []
+      })
+      .addCase(fetchTodolistsTC.fulfilled, (state, action) => {
+        return action.payload.todolists.map((tl) => ({
+          ...tl,
+          filter: 'all',
+          entityStatus: 'idle',
+        }))
+      })
   },
 })
 
@@ -77,20 +76,21 @@ export const todolistsReducer = slice.reducer
 export const todolistsActions = slice.actions
 
 // thunks
-export const fetchTodolistsTC = (): AppThunk => {
-  return (dispatch) => {
-    dispatch(appActions.setAppStatus({ status: 'loading' }))
-    todolistsAPI
-      .getTodolists()
-      .then((res) => {
-        dispatch(todolistsActions.setTodolists({ todolists: res.data }))
-        dispatch(appActions.setAppStatus({ status: 'succeeded' }))
-      })
-      .catch((error) => {
-        handleServerNetworkError(error, dispatch)
-      })
+export const fetchTodolistsTC = createAppAsyncThunk<
+  {
+    todolists: TodolistType[]
+  },
+  void
+>('todolists/fetch-task', async (arg, { dispatch, rejectWithValue }) => {
+  try {
+    const res = await todolistsAPI.getTodolists()
+    return { todolists: res.data }
+  } catch (e: any) {
+    handleServerNetworkError(e, dispatch)
+    return rejectWithValue(null)
   }
-}
+})
+
 export const removeTodolistTC = (id: string): AppThunk => {
   return (dispatch) => {
     //изменим глобальный статус приложения, чтобы вверху полоса побежала

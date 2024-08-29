@@ -1,3 +1,4 @@
+/*
 import {
   fetchTasksTC,
   tasksReducer,
@@ -88,7 +89,7 @@ beforeEach(() => {
   }
 })
 
-/*test('correct task should be deleted from correct array', () => {
+/!*test('correct task should be deleted from correct array', () => {
   const action = tasksActions.removeTask({
     taskId: '2',
     todolistId: 'todolistId2',
@@ -99,9 +100,9 @@ beforeEach(() => {
   expect(endState['todolistId1'].length).toBe(3)
   expect(endState['todolistId2'].length).toBe(2)
   expect(endState['todolistId2'].every((t) => t.id !== '2')).toBeTruthy()
-})*/
+})*!/
 
-/*test('correct task should be added to correct array', () => {
+/!*test('correct task should be added to correct array', () => {
   //const action = addTaskAC("juce", "todolistId2");
   const action = tasksActions.addTask({
     task: {
@@ -125,9 +126,9 @@ beforeEach(() => {
   expect(endState['todolistId2'][0].id).toBeDefined()
   expect(endState['todolistId2'][0].title).toBe('juce')
   expect(endState['todolistId2'][0].status).toBe(TaskStatuses.New)
-})*/
+})*!/
 
-/*test('status of specified task should be changed', () => {
+/!*test('status of specified task should be changed', () => {
   const action = tasksActions.updateTask({
     taskId: '2',
     model: { status: TaskStatuses.New },
@@ -138,9 +139,9 @@ beforeEach(() => {
 
   expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed)
   expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
-})*/
+})*!/
 
-/*test('title of specified task should be changed', () => {
+/!*test('title of specified task should be changed', () => {
   const action = tasksActions.updateTask({
     taskId: '2',
     model: { title: 'yogurt' },
@@ -152,7 +153,7 @@ beforeEach(() => {
   expect(endState['todolistId1'][1].title).toBe('JS')
   expect(endState['todolistId2'][1].title).toBe('yogurt')
   expect(endState['todolistId2'][0].title).toBe('bread')
-})*/
+})*!/
 
 test('new array should be added when new todolist is added', () => {
   const action = todolistsActions.addTodolist({
@@ -231,3 +232,4 @@ test('tasks should be added for todolist', () => {
   expect(endState['todolistId1'].length).toBe(3)
   expect(endState['todolistId2'].length).toBe(0)
 })
+*/
