@@ -69,6 +69,10 @@ const slice = createSlice({
           entityStatus: 'idle',
         }))
       })
+      .addCase(removeTodolistTC.fulfilled, (state, action) => {
+        const index = state.findIndex((todo) => todo.id === action.payload.id)
+        if (index !== -1) state.splice(index, 1)
+      })
   },
 })
 
@@ -81,7 +85,7 @@ export const fetchTodolistsTC = createAppAsyncThunk<
     todolists: TodolistType[]
   },
   void
->('todolists/fetch-task', async (arg, { dispatch, rejectWithValue }) => {
+>('todolists/fetch-todolists', async (arg, { dispatch, rejectWithValue }) => {
   try {
     const res = await todolistsAPI.getTodolists()
     return { todolists: res.data }
@@ -91,24 +95,32 @@ export const fetchTodolistsTC = createAppAsyncThunk<
   }
 })
 
-export const removeTodolistTC = (id: string): AppThunk => {
-  return (dispatch) => {
-    //изменим глобальный статус приложения, чтобы вверху полоса побежала
-    dispatch(appActions.setAppStatus({ status: 'loading' }))
-    //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
+export const removeTodolistTC = createAppAsyncThunk<
+  {
+    id: string
+  },
+  string
+>('todolists/remove-todolist', async (id, { dispatch, rejectWithValue }) => {
+  try {
     dispatch(
       todolistsActions.changeTodolistEntityStatus({
         id,
         entityStatus: 'loading',
       })
     )
-    todolistsAPI.deleteTodolist(id).then((res) => {
-      dispatch(todolistsActions.removeTodolist({ id }))
-      //скажем глобально приложению, что асинхронная операция завершена
-      dispatch(appActions.setAppStatus({ status: 'succeeded' }))
-    })
+    const res = await todolistsAPI.deleteTodolist(id)
+    if (res.data.resultCode === 0) {
+      return { id }
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  } catch (e: any) {
+    handleServerNetworkError(e, dispatch)
+    return rejectWithValue(null)
   }
-}
+})
+
 export const addTodolistTC = (title: string): AppThunk => {
   return (dispatch) => {
     dispatch(appActions.setAppStatus({ status: 'loading' }))

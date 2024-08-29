@@ -8,7 +8,10 @@ import {
   removeTaskTC,
   updateTaskTC,
 } from 'features/TodolistsList/tasks.reducer'
-import { fetchTodolistsTC } from 'features/TodolistsList/todolists.reducer'
+import {
+  fetchTodolistsTC,
+  removeTodolistTC,
+} from 'features/TodolistsList/todolists.reducer'
 
 const initialState = {
   status: 'idle' as RequestStatusType,
@@ -65,10 +68,16 @@ const slice = createSlice({
       .addCase(removeTaskTC.fulfilled, (state) => {
         state.status = 'succeeded'
       })
-      .addCase(fetchTodolistsTC.fulfilled, (state) => {
+      .addCase(fetchTodolistsTC.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(fetchTodolistsTC.rejected, (state) => {
+      .addCase(fetchTodolistsTC.fulfilled, (state) => {
+        state.status = 'succeeded'
+      })
+      .addCase(removeTodolistTC.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(removeTodolistTC.fulfilled, (state) => {
         state.status = 'succeeded'
       })
   },
