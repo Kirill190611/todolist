@@ -1,4 +1,3 @@
-import { TaskType } from 'common/api/types.api'
 import { AppThunk } from 'app/store'
 import {
   handleServerAppError,
@@ -6,6 +5,7 @@ import {
   clearTasksAndTodolists,
   TaskPriorities,
   TaskStatuses,
+  TaskType,
 } from 'common'
 import { todolistsActions } from 'features/TodolistsList/todolists.reducer'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -17,16 +17,7 @@ const initialState: TasksStateType = {}
 const slice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {
-    removeTask: (
-      state,
-      action: PayloadAction<{ taskId: string; todolistId: string }>
-    ) => {
-      const tasks = state[action.payload.todolistId]
-      const index = tasks.findIndex((t) => t.id === action.payload.taskId)
-      if (index !== -1) tasks.splice(index, 1)
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(todolistsActions.addTodolist, (state, action) => {
@@ -56,6 +47,11 @@ const slice = createSlice({
         if (index !== -1) {
           tasks[index] = { ...tasks[index], ...action.payload.model }
         }
+      })
+      .addCase(removeTaskTC.fulfilled, (state, action) => {
+        const tasks = state[action.payload.todolistId]
+        const index = tasks.findIndex((t) => t.id === action.payload.taskId)
+        if (index !== -1) tasks.splice(index, 1)
       })
   },
 })
@@ -106,13 +102,30 @@ export const addTaskTC = createAppAsyncThunk<
   }
 )
 
-export const removeTaskTC =
-  (taskId: string, todolistId: string): AppThunk =>
-  (dispatch) => {
-    todolistsAPI.deleteTask(todolistId, taskId).then(() => {
-      dispatch(tasksActions.removeTask({ taskId, todolistId }))
-    })
+export const removeTaskTC = createAppAsyncThunk<
+  {
+    taskId: string
+    todolistId: string
+  },
+  {
+    taskId: string
+    todolistId: string
   }
+>('tasks/remove-task', async ({ todolistId, taskId }, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI
+  try {
+    const res = await todolistsAPI.deleteTask(todolistId, taskId)
+    if (res.data.resultCode === 0) {
+      return { todolistId, taskId }
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  } catch (e: any) {
+    handleServerNetworkError(e, dispatch)
+    return rejectWithValue(null)
+  }
+})
 
 type UpdateTaskModel = {
   taskId: string

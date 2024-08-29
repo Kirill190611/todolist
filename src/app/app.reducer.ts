@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   addTaskTC,
   fetchTasksTC,
+  removeTaskTC,
   updateTaskTC,
 } from 'features/TodolistsList/tasks.reducer'
 
@@ -55,6 +56,12 @@ const slice = createSlice({
         state.status = 'loading'
       })
       .addCase(updateTaskTC.fulfilled, (state) => {
+        state.status = 'succeeded'
+      })
+      .addCase(removeTaskTC.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(removeTaskTC.fulfilled, (state) => {
         state.status = 'succeeded'
       })
   },
