@@ -7,7 +7,9 @@ import {
   TaskType,
 } from 'common'
 import {
+  addTodolistTC,
   fetchTodolistsTC,
+  removeTodolistTC,
   todolistsActions,
 } from 'features/TodolistsList/todolists.reducer'
 import { createSlice } from '@reduxjs/toolkit'
@@ -22,12 +24,6 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(todolistsActions.addTodolist, (state, action) => {
-        state[action.payload.todolist.id] = []
-      })
-      .addCase(todolistsActions.removeTodolist, (state, action) => {
-        delete state[action.payload.id]
-      })
       .addCase(clearTasksAndTodolists, () => {
         return {}
       })
@@ -54,6 +50,12 @@ const slice = createSlice({
         action.payload.todolists.forEach((tl) => {
           state[tl.id] = []
         })
+      })
+      .addCase(removeTodolistTC.fulfilled, (state, action) => {
+        delete state[action.payload.id]
+      })
+      .addCase(addTodolistTC.fulfilled, (state, action) => {
+        state[action.payload.todolist.id] = []
       })
   },
 })
