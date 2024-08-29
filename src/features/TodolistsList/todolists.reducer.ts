@@ -16,15 +16,6 @@ const slice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    changeTodolistTitle: (
-      state,
-      action: PayloadAction<{ id: string; title: string }>
-    ) => {
-      const todo = state.find((todo) => todo.id === action.payload.id)
-      if (todo) {
-        todo.title = action.payload.title
-      }
-    },
     changeTodolistFilter: (
       state,
       action: PayloadAction<{ id: string; filter: FilterValuesType }>
@@ -67,6 +58,12 @@ const slice = createSlice({
           entityStatus: 'idle',
         }
         state.unshift(newTodolist)
+      })
+      .addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
+        const todo = state.find((todo) => todo.id === action.payload.id)
+        if (todo) {
+          todo.title = action.payload.title
+        }
       })
   },
 })
@@ -136,13 +133,32 @@ export const addTodolistTC = createAppAsyncThunk<
   }
 })
 
-export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
-  return (dispatch) => {
-    todolistsAPI.updateTodolist(id, title).then((res) => {
-      dispatch(todolistsActions.changeTodolistTitle({ id, title }))
-    })
+export const changeTodolistTitleTC = createAppAsyncThunk<
+  {
+    id: string
+    title: string
+  },
+  {
+    id: string
+    title: string
   }
-}
+>(
+  'todolists/change-todolist-title',
+  async ({ id, title }, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await todolistsAPI.updateTodolist(id, title)
+      if (res.data.resultCode === 0) {
+        return { id, title }
+      } else {
+        handleServerAppError(res.data, dispatch)
+        return rejectWithValue(null)
+      }
+    } catch (e: any) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    }
+  }
+)
 
 // types
 export type FilterValuesType = 'all' | 'active' | 'completed'

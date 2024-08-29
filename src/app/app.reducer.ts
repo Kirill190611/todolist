@@ -10,6 +10,7 @@ import {
 } from 'features/TodolistsList/tasks.reducer'
 import {
   addTodolistTC,
+  changeTodolistTitleTC,
   fetchTodolistsTC,
   removeTodolistTC,
 } from 'features/TodolistsList/todolists.reducer'
@@ -85,6 +86,12 @@ const slice = createSlice({
         state.status = 'loading'
       })
       .addCase(addTodolistTC.fulfilled, (state) => {
+        state.status = 'succeeded'
+      })
+      .addCase(changeTodolistTitleTC.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(changeTodolistTitleTC.fulfilled, (state) => {
         state.status = 'succeeded'
       })
   },
