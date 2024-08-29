@@ -1,6 +1,5 @@
 import {
   fetchTasksTC,
-  tasksActions,
   tasksReducer,
   TasksStateType,
 } from 'features/TodolistsList/tasks.reducer'

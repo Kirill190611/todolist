@@ -1,4 +1,3 @@
-import { AppThunk } from 'app/store'
 import {
   handleServerAppError,
   handleServerNetworkError,
@@ -8,7 +7,7 @@ import {
   TaskType,
 } from 'common'
 import { todolistsActions } from 'features/TodolistsList/todolists.reducer'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from 'common/hooks/use-app-async-thunk'
 import { todolistsAPI } from 'features/TodolistsList/Todolist/todolists-api'
 
