@@ -1,2 +1,1 @@
-export * from 'common/api/types.api'
-export * from './common.api'
+export { instance } from "./common.api";

@@ -1,2 +1,1 @@
-export * from './useAppDispatch'
-export * from './use-app-async-thunk'
+export { useAppDispatch } from "./useAppDispatch";
