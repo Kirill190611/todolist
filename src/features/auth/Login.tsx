@@ -24,7 +24,7 @@ export const Login = () => {
 
   const formik = useFormik({
     validate: (values) => {
-      /*if (!values.email) {
+      if (!values.email) {
         return {
           email: 'Email is required',
         }
@@ -33,7 +33,7 @@ export const Login = () => {
         return {
           password: 'Password is required',
         }
-      }*/
+      }
     },
     initialValues: {
       email: '',
@@ -44,7 +44,7 @@ export const Login = () => {
       dispatch(authThunks.login(values))
         .unwrap()
         .catch((err: BaseResponse) => {
-          err.fieldsErrors.forEach((el) => {
+          err.fieldsErrors?.forEach((el) => {
             formikHelpers.setFieldError(el.field, el.error)
           })
         })
