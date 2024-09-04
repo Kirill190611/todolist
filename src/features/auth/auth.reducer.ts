@@ -9,6 +9,7 @@ import {
 } from 'common/utils'
 import { Simulate } from 'react-dom/test-utils'
 import error = Simulate.error
+import { thunkTryCatch } from 'common/utils/thunkTryCatch'
 
 const slice = createSlice({
   name: 'auth',
@@ -77,9 +78,9 @@ export const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
 
 export const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
   `${slice.name}/initializeApp`,
-  async (_, thunkAPI) => {
+  (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await authAPI.me()
       if (res.data.resultCode === 0) {
         return { isLoggedIn: true }
@@ -87,12 +88,9 @@ export const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
         handleServerAppError(res.data, dispatch, false)
         return rejectWithValue(null)
       }
-    } catch (error) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
-    } finally {
+    }).finally(() => {
       dispatch(appActions.setAppInitialized({ isInitialized: true }))
-    }
+    })
   }
 )
 

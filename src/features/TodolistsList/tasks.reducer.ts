@@ -166,15 +166,6 @@ export const tasksActions = slice.actions
 export const tasksThunks = { fetchTasks, addTask, updateTask, removeTask }
 
 // types
-export type UpdateDomainTaskModelType = {
-  title?: string
-  description?: string
-  status?: TaskStatuses
-  priority?: TaskPriorities
-  startDate?: string
-  deadline?: string
-}
+export type UpdateDomainTaskModelType = Partial<UpdateTaskModelType>
 
-export type TasksStateType = {
-  [key: string]: Array<TaskType>
-}
+export type TasksStateType = Record<string, TaskType[]>

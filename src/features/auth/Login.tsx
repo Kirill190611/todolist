@@ -16,6 +16,7 @@ import { useAppDispatch } from 'common/hooks'
 import { selectIsLoggedIn } from 'features/auth/auth.selectors'
 import { authThunks } from 'features/auth/auth.reducer'
 import { BaseResponse } from 'common/types/common.types'
+import { LoginParamsType } from 'features/auth/auth.api'
 
 export const Login = () => {
   const dispatch = useAppDispatch()
@@ -40,7 +41,7 @@ export const Login = () => {
       password: '',
       rememberMe: false,
     },
-    onSubmit: (values, formikHelpers) => {
+    onSubmit: (values: Omit<LoginParamsType, 'captcha'>, formikHelpers) => {
       dispatch(authThunks.login(values))
         .unwrap()
         .catch((err: BaseResponse) => {
