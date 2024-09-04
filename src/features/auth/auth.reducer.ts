@@ -32,28 +32,6 @@ const slice = createSlice({
 })
 
 // thunks
-export const _login = createAppAsyncThunk<
-  { isLoggedIn: boolean },
-  LoginParamsType
->(`${slice.name}/login`, async (arg, thunkAPI) => {
-  const { dispatch, rejectWithValue } = thunkAPI
-  try {
-    dispatch(appActions.setAppStatus({ status: 'loading' }))
-    const res = await authAPI.login(arg)
-    if (res.data.resultCode === 0) {
-      dispatch(appActions.setAppStatus({ status: 'succeeded' }))
-      return { isLoggedIn: true }
-    } else {
-      const isShowAppError = !res.data.fieldsErrors.length
-      handleServerAppError(res.data, dispatch, isShowAppError)
-      return rejectWithValue(res.data)
-    }
-  } catch (e) {
-    handleServerNetworkError(e, dispatch)
-    return rejectWithValue(null)
-  }
-})
-
 export const login = createAppAsyncThunk<
   { isLoggedIn: boolean },
   LoginParamsType
