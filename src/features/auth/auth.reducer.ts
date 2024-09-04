@@ -32,34 +32,51 @@ const slice = createSlice({
 })
 
 // thunks
-const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
-  `${slice.name}/login`,
-  async (arg, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI
-    try {
-      dispatch(appActions.setAppStatus({ status: 'loading' }))
-      const res = await authAPI.login(arg)
-      if (res.data.resultCode === 0) {
-        dispatch(appActions.setAppStatus({ status: 'succeeded' }))
-        return { isLoggedIn: true }
-      } else {
-        const isShowAppError = !res.data.fieldsErrors.length
-        handleServerAppError(res.data, dispatch, isShowAppError)
-        return rejectWithValue(res.data)
-      }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch)
-      return rejectWithValue(null)
+export const _login = createAppAsyncThunk<
+  { isLoggedIn: boolean },
+  LoginParamsType
+>(`${slice.name}/login`, async (arg, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI
+  try {
+    dispatch(appActions.setAppStatus({ status: 'loading' }))
+    const res = await authAPI.login(arg)
+    if (res.data.resultCode === 0) {
+      dispatch(appActions.setAppStatus({ status: 'succeeded' }))
+      return { isLoggedIn: true }
+    } else {
+      const isShowAppError = !res.data.fieldsErrors.length
+      handleServerAppError(res.data, dispatch, isShowAppError)
+      return rejectWithValue(res.data)
     }
+  } catch (e) {
+    handleServerNetworkError(e, dispatch)
+    return rejectWithValue(null)
   }
-)
+})
+
+export const login = createAppAsyncThunk<
+  { isLoggedIn: boolean },
+  LoginParamsType
+>(`${slice.name}/login`, (arg, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI
+  return thunkTryCatch(thunkAPI, async () => {
+    const res = await authAPI.login(arg)
+    if (res.data.resultCode === 0) {
+      dispatch(appActions.setAppStatus({ status: 'succeeded' }))
+      return { isLoggedIn: true }
+    } else {
+      const isShowAppError = !res.data.fieldsErrors.length
+      handleServerAppError(res.data, dispatch, isShowAppError)
+      return rejectWithValue(res.data)
+    }
+  })
+})
 
 export const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
   `${slice.name}/logout`,
-  async (_, thunkAPI) => {
+  (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
-      dispatch(appActions.setAppStatus({ status: 'loading' }))
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await authAPI.logout()
       if (res.data.resultCode === 0) {
         dispatch(clearTasksAndTodolists())
@@ -69,10 +86,7 @@ export const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
       }
-    } catch (error) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
-    }
+    })
   }
 )
 
