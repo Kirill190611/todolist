@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { useAppDispatch } from "common/hooks"
+import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import {
   AppBar,
   Button,
@@ -10,42 +11,33 @@ import {
   LinearProgress,
   Toolbar,
   Typography,
-} from '@mui/material'
-import { Menu } from '@mui/icons-material'
-import { Login } from 'features/auth/Login'
-import { initializeApp, logout } from 'features/auth/auth.reducer'
-import './App.css'
-import { TodolistsList } from 'features/TodolistsList/TodolistsList'
-import { ErrorSnackbar } from 'common/components'
-import { useAppDispatch } from 'common/hooks'
-import { selectIsLoggedIn } from 'features/auth/auth.selectors'
-import { selectAppStatus, selectIsInitialized } from 'app/app.selectors'
+} from "@mui/material"
+import { Menu } from "@mui/icons-material"
+import "./App.css"
+import { ErrorSnackbar } from "common/components"
+import { authThunks, selectIsLoggedIn } from "../features/auth/model/authSlice"
+import { Login } from "../features/auth/ui/login/Login"
+import { TodolistsList } from "../features/todolistsList/TodolistsList"
+import { selectIsInitialized, selectStatus } from "./appSlice"
 
 function App() {
-  const status = useSelector(selectAppStatus)
+  const status = useSelector(selectStatus)
   const isInitialized = useSelector(selectIsInitialized)
   const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(initializeApp())
+    dispatch(authThunks.initializeApp())
   }, [])
 
-  const logoutHandler = useCallback(() => {
-    dispatch(logout())
-  }, [])
+  const logoutHandler = () => {
+    dispatch(authThunks.logout())
+  }
 
   if (!isInitialized) {
     return (
-      <div
-        style={{
-          position: 'fixed',
-          top: '30%',
-          textAlign: 'center',
-          width: '100%',
-        }}
-      >
+      <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
         <CircularProgress />
       </div>
     )
@@ -53,26 +45,26 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className='App'>
+      <div className="App">
         <ErrorSnackbar />
-        <AppBar position='static'>
+        <AppBar position="static">
           <Toolbar>
-            <IconButton edge='start' color='inherit' aria-label='menu'>
+            <IconButton edge="start" color="inherit" aria-label="menu">
               <Menu />
             </IconButton>
-            <Typography variant='h6'>News</Typography>
+            <Typography variant="h6">News</Typography>
             {isLoggedIn && (
-              <Button color='inherit' onClick={logoutHandler}>
+              <Button color="inherit" onClick={logoutHandler}>
                 Log out
               </Button>
             )}
           </Toolbar>
-          {status === 'loading' && <LinearProgress />}
+          {status === "loading" && <LinearProgress />}
         </AppBar>
         <Container fixed>
           <Routes>
-            <Route path={'/'} element={<TodolistsList />} />
-            <Route path={'/login'} element={<Login />} />
+            <Route path={"/"} element={<TodolistsList />} />
+            <Route path={"/login"} element={<Login />} />
           </Routes>
         </Container>
       </div>
