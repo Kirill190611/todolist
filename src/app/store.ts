@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { appPath, appReducer } from 'app/appSlice'
-import { authPath, authReducer } from '../features/auth/model/authSlice'
+import { authPath, authReducer } from 'features/auth/model/authSlice'
 import {
   tasksPath,
   tasksReducer,

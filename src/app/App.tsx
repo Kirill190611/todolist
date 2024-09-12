@@ -15,8 +15,8 @@ import {
 import { Menu } from '@mui/icons-material'
 import './App.css'
 import { ErrorSnackbar } from 'common/components'
-import { authThunks, selectIsLoggedIn } from '../features/auth/model/authSlice'
-import { Login } from '../features/auth/ui/login/Login'
+import { authThunks, selectIsLoggedIn } from 'features/auth/model/authSlice'
+import { Login } from 'features/auth/ui/login/Login'
 import { TodolistsList } from 'features/todolistsList/ui/TodolistsList'
 import { selectIsInitialized, selectStatus } from './appSlice'
 
