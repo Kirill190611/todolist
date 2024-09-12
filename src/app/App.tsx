@@ -1,7 +1,7 @@
-import { useAppDispatch } from "common/hooks"
-import React, { useEffect } from "react"
-import { useSelector } from "react-redux"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { useAppDispatch } from 'common/hooks'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import {
   AppBar,
   Button,
@@ -11,14 +11,14 @@ import {
   LinearProgress,
   Toolbar,
   Typography,
-} from "@mui/material"
-import { Menu } from "@mui/icons-material"
-import "./App.css"
-import { ErrorSnackbar } from "common/components"
-import { authThunks, selectIsLoggedIn } from "../features/auth/model/authSlice"
-import { Login } from "../features/auth/ui/login/Login"
-import { TodolistsList } from "../features/todolistsList/TodolistsList"
-import { selectIsInitialized, selectStatus } from "./appSlice"
+} from '@mui/material'
+import { Menu } from '@mui/icons-material'
+import './App.css'
+import { ErrorSnackbar } from 'common/components'
+import { authThunks, selectIsLoggedIn } from '../features/auth/model/authSlice'
+import { Login } from '../features/auth/ui/login/Login'
+import { TodolistsList } from 'features/todolistsList/ui/TodolistsList'
+import { selectIsInitialized, selectStatus } from './appSlice'
 
 function App() {
   const status = useSelector(selectStatus)
@@ -37,7 +37,14 @@ function App() {
 
   if (!isInitialized) {
     return (
-      <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
+      <div
+        style={{
+          position: 'fixed',
+          top: '30%',
+          textAlign: 'center',
+          width: '100%',
+        }}
+      >
         <CircularProgress />
       </div>
     )
@@ -45,26 +52,26 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className='App'>
         <ErrorSnackbar />
-        <AppBar position="static">
+        <AppBar position='static'>
           <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu">
+            <IconButton edge='start' color='inherit' aria-label='menu'>
               <Menu />
             </IconButton>
-            <Typography variant="h6">News</Typography>
+            <Typography variant='h6'>News</Typography>
             {isLoggedIn && (
-              <Button color="inherit" onClick={logoutHandler}>
+              <Button color='inherit' onClick={logoutHandler}>
                 Log out
               </Button>
             )}
           </Toolbar>
-          {status === "loading" && <LinearProgress />}
+          {status === 'loading' && <LinearProgress />}
         </AppBar>
         <Container fixed>
           <Routes>
-            <Route path={"/"} element={<TodolistsList />} />
-            <Route path={"/login"} element={<Login />} />
+            <Route path={'/'} element={<TodolistsList />} />
+            <Route path={'/login'} element={<Login />} />
           </Routes>
         </Container>
       </div>
