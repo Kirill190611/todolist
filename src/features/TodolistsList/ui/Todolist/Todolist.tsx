@@ -12,7 +12,7 @@ import {
 import { Task } from 'features/todolistsList/ui/Todolist/Task/Task'
 import { TaskType } from 'features/todolistsList/api/tasksApi.types'
 
-type PropsType = {
+type Props = {
   todolist: TodolistDomainType
   tasks: TaskType[]
   changeFilter: (value: FilterValuesType, todolistId: string) => void
@@ -21,7 +21,7 @@ type PropsType = {
   changeTodolistTitle: (id: string, newTitle: string) => void
 }
 
-export const Todolist = React.memo(function (props: PropsType) {
+export const Todolist = React.memo(function (props: Props) {
   const dispatch = useAppDispatch()
 
   useEffect(() => {

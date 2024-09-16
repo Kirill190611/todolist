@@ -6,20 +6,26 @@ import { TaskStatuses } from 'common/enums'
 import { TaskType } from 'features/todolistsList/api/tasksApi.types'
 import { tasksThunks } from 'features/todolistsList/model/tasksSlice'
 import { useAppDispatch } from 'common/hooks'
+import s from './Task.module.css'
 
-type TaskPropsType = {
+type Props = {
   task: TaskType
   todolistId: string
 }
 
-export const Task = (props: TaskPropsType) => {
+export const Task = (props: Props) => {
+  const {
+    task: { id: taskId, title, status },
+    todolistId,
+  } = props
+  const isTaskCompleted = status === TaskStatuses.Completed
   const dispatch = useAppDispatch()
 
   const removeTaskHandler = () => {
     dispatch(
       tasksThunks.removeTask({
-        taskId: props.task.id,
-        todolistId: props.todolistId,
+        taskId,
+        todolistId,
       })
     )
   }
@@ -30,11 +36,11 @@ export const Task = (props: TaskPropsType) => {
       : TaskStatuses.New
     dispatch(
       tasksThunks.updateTask({
-        taskId: props.task.id,
+        taskId,
         domainModel: {
           status,
         },
-        todolistId: props.todolistId,
+        todolistId,
       })
     )
   }
@@ -42,28 +48,22 @@ export const Task = (props: TaskPropsType) => {
   const changeTaskTitleHandler = (title: string) => {
     dispatch(
       tasksThunks.updateTask({
-        taskId: props.task.id,
+        taskId,
         domainModel: { title },
-        todolistId: props.todolistId,
+        todolistId,
       })
     )
   }
 
   return (
-    <div
-      key={props.task.id}
-      className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}
-    >
+    <div key={taskId} className={isTaskCompleted ? s.isDone : ''}>
       <Checkbox
-        checked={props.task.status === TaskStatuses.Completed}
+        checked={isTaskCompleted}
         color='primary'
         onChange={changeTaskStatusHandler}
       />
 
-      <EditableSpan
-        value={props.task.title}
-        onChange={changeTaskTitleHandler}
-      />
+      <EditableSpan value={title} onChange={changeTaskTitleHandler} />
       <IconButton onClick={removeTaskHandler}>
         <Delete />
       </IconButton>
