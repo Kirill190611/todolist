@@ -22,15 +22,15 @@ export const Todolist = function (props: Props) {
     dispatch(tasksThunks.fetchTasks(todolist.id))
   }, [])
 
-  const addTask = (title: string) => {
-    dispatch(tasksThunks.addTask({ title, todolistId: todolist.id }))
+  const addTaskHandler = (title: string) => {
+    return dispatch(tasksThunks.addTask({ title, todolistId: todolist.id }))
   }
 
   return (
     <div>
       <TodolistTitle todolist={todolist} />
       <AddItemForm
-        addItem={addTask}
+        addItem={addTaskHandler}
         disabled={todolist.entityStatus === 'loading'}
       />
       <Tasks tasks={tasks} todolist={todolist} />
