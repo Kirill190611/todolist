@@ -25,7 +25,9 @@ export const AddItemForm = React.memo(function ({
           setError('')
         })
         .catch((err: BaseResponse) => {
-          setError(err.messages[0])
+          if (err?.resultCode) {
+            setError(err.messages[0])
+          }
         })
     } else {
       setError('Title is required')
