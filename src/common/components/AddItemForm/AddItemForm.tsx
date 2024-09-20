@@ -65,3 +65,5 @@ export const AddItemForm = React.memo(function ({
     </div>
   )
 })
+
+//Todo: 1) ДЗ из spr5w4; 2) Разобрать логику кода еще раз; 3) Сделать стили

@@ -7,15 +7,15 @@ import {
   handleServerAppError,
   thunkTryCatch,
 } from 'common/utils'
-import { todolistsThunks } from 'features/todolistsList/model/todolistsSlice'
+import { tasksApi } from '../api/tasksApi'
 import {
   AddTaskArgType,
   RemoveTaskArgType,
   TaskType,
   UpdateTaskArgType,
   UpdateTaskModelType,
-} from 'features/todolistsList/api/tasksApi.types'
-import { tasksApi } from 'features/todolistsList/api/tasksApi'
+} from '../api/tasksApi.types'
+import { FilterValuesType, todolistsThunks } from './todolistsSlice'
 
 const slice = createSlice({
   name: 'tasks',
@@ -59,6 +59,27 @@ const slice = createSlice({
   },
   selectors: {
     selectTasks: (state) => state,
+    selectFilteredTasks: (
+      state,
+      todolistId: string,
+      filter: FilterValuesType
+    ) => {
+      let tasksForTodolist = state[todolistId]
+
+      if (filter === 'active') {
+        tasksForTodolist = tasksForTodolist.filter(
+          (t) => t.status === TaskStatuses.New
+        )
+      }
+
+      if (filter === 'completed') {
+        tasksForTodolist = tasksForTodolist.filter(
+          (t) => t.status === TaskStatuses.Completed
+        )
+      }
+
+      return tasksForTodolist
+    },
   },
 })
 
@@ -75,18 +96,14 @@ const fetchTasks = createAppAsyncThunk<
 
 const addTask = createAppAsyncThunk<{ task: TaskType }, AddTaskArgType>(
   `${slice.name}/addTask`,
-  (arg, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI
-    return thunkTryCatch(thunkAPI, async () => {
-      const res = await tasksApi.createTask(arg)
-      if (res.data.resultCode === ResultCode.Success) {
-        const task = res.data.data.item
-        return { task }
-      } else {
-        handleServerAppError(res.data, dispatch, false)
-        return rejectWithValue(res.data)
-      }
-    })
+  async (arg, { rejectWithValue }) => {
+    const res = await tasksApi.createTask(arg)
+    if (res.data.resultCode === ResultCode.Success) {
+      const task = res.data.data.item
+      return { task }
+    } else {
+      return rejectWithValue(res.data)
+    }
   }
 )
 
@@ -147,7 +164,7 @@ const removeTask = createAppAsyncThunk<RemoveTaskArgType, RemoveTaskArgType>(
 
 export const tasksReducer = slice.reducer
 export const tasksThunks = { fetchTasks, addTask, updateTask, removeTask }
-export const { selectTasks } = slice.selectors
+export const { selectTasks, selectFilteredTasks } = slice.selectors
 export const tasksPath = slice.reducerPath
 
 // types
