@@ -1,16 +1,13 @@
-import { Grid, Paper } from '@mui/material'
-import { AddItemForm } from 'common/components'
-import { useAppDispatch } from 'common/hooks'
-import React, { useCallback, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
-import { selectIsLoggedIn } from 'features/auth/model/authSlice'
-import { selectTasks } from 'features/todolistsList/model/tasksSlice'
-import { Todolist } from 'features/todolistsList/ui/Todolist/Todolist'
-import {
-  selectTodolists,
-  todolistsThunks,
-} from 'features/todolistsList/model/todolistsSlice'
+import { Grid, Paper } from "@mui/material"
+import { AddItemForm } from "common/components"
+import { useAppDispatch } from "common/hooks"
+import React, { useCallback, useEffect } from "react"
+import { useSelector } from "react-redux"
+import { Navigate } from "react-router-dom"
+import { selectIsLoggedIn } from "../../auth/model/authSlice"
+import { selectTasks } from "../model/tasksSlice"
+import { selectTodolists, todolistsThunks } from "../model/todolistsSlice"
+import { Todolist } from "./Todolist/Todolist"
 
 export const TodolistsList = () => {
   const todolists = useSelector(selectTodolists)
@@ -31,22 +28,20 @@ export const TodolistsList = () => {
   }, [])
 
   if (!isLoggedIn) {
-    return <Navigate to={'/login'} />
+    return <Navigate to={"/login"} />
   }
 
   return (
     <>
-      <Grid container style={{ padding: '20px' }}>
+      <Grid container style={{ padding: "20px" }}>
         <AddItemForm addItem={addTodolist} />
       </Grid>
       <Grid container spacing={3}>
         {todolists.map((tl) => {
-          let allTodolistTasks = tasks[tl.id]
-
           return (
             <Grid item key={tl.id}>
-              <Paper style={{ padding: '10px' }}>
-                <Todolist todolist={tl} tasks={allTodolistTasks} />
+              <Paper style={{ padding: "10px" }}>
+                <Todolist todolist={tl} />
               </Paper>
             </Grid>
           )

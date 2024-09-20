@@ -1,20 +1,16 @@
-import * as React from 'react'
-import { EditableSpan } from 'common/components'
-import { IconButton } from '@mui/material'
-import { Delete } from '@mui/icons-material'
-import {
-  TodolistDomainType,
-  todolistsThunks,
-} from 'features/todolistsList/model/todolistsSlice'
-import { useAppDispatch } from 'common/hooks'
+import { Delete } from "@mui/icons-material"
+import { IconButton } from "@mui/material"
+import React from "react"
+import { EditableSpan } from "common/components"
+import { useAppDispatch } from "common/hooks"
+import { TodolistDomainType, todolistsThunks } from "../../../model/todolistsSlice"
 
 type Props = {
   todolist: TodolistDomainType
 }
 
-export const TodolistTitle = (props: Props) => {
-  const { todolist } = props
-  const { title, id, entityStatus } = todolist
+export const TodolistTitle = ({ todolist }: Props) => {
+  const { id, title, entityStatus } = todolist
 
   const dispatch = useAppDispatch()
 
@@ -29,10 +25,7 @@ export const TodolistTitle = (props: Props) => {
   return (
     <h3>
       <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
-      <IconButton
-        onClick={removeTodolistHandler}
-        disabled={entityStatus === 'loading'}
-      >
+      <IconButton onClick={removeTodolistHandler} disabled={entityStatus === "loading"}>
         <Delete />
       </IconButton>
     </h3>

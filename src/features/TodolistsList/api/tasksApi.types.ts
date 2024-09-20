@@ -1,5 +1,5 @@
-import { TaskPriorities, TaskStatuses } from 'common/enums'
-import { UpdateDomainTaskModelType } from 'features/todolistsList/model/tasksSlice'
+import { TaskPriorities, TaskStatuses } from "../../../common/enums"
+import { UpdateDomainTaskModelType } from "../model/tasksSlice"
 
 export type TaskType = {
   description: string

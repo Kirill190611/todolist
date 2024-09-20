@@ -1,31 +1,24 @@
-import { Task } from 'features/todolistsList/ui/Todolist/Tasks/Task/Task'
-import React from 'react'
-import { TaskStatuses } from 'common/enums'
-import { TodolistDomainType } from 'features/todolistsList/model/todolistsSlice'
-import { TaskType } from 'features/todolistsList/api/tasksApi.types'
+import React from "react"
+import { useSelector } from "react-redux"
+import { AppRootStateType } from "../../../../../app/store"
+import { TaskType } from "../../../api/tasksApi.types"
+import { selectFilteredTasks } from "../../../model/tasksSlice"
+import { TodolistDomainType } from "../../../model/todolistsSlice"
+import { Task } from "./Task/Task"
 
 type Props = {
   todolist: TodolistDomainType
-  tasks: TaskType[]
 }
 
-export const Tasks = (props: Props) => {
-  const { todolist, tasks } = props
-  const { filter, id } = todolist
-
-  let tasksForTodolist = tasks
-
-  if (filter === 'active') {
-    tasksForTodolist = tasks.filter((t) => t.status === TaskStatuses.New)
-  }
-  if (filter === 'completed') {
-    tasksForTodolist = tasks.filter((t) => t.status === TaskStatuses.Completed)
-  }
+export const Tasks = ({ todolist }: Props) => {
+  const tasks = useSelector<AppRootStateType, TaskType[]>((state) =>
+    selectFilteredTasks(state, todolist.id, todolist.filter),
+  )
 
   return (
     <>
-      {tasksForTodolist.map((t) => (
-        <Task key={t.id} task={t} todolistId={id} />
+      {tasks.map((t) => (
+        <Task key={t.id} task={t} todolistId={todolist.id} />
       ))}
     </>
   )

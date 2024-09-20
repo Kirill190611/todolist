@@ -1,4 +1,3 @@
-import { createSlice } from '@reduxjs/toolkit'
 import { appActions } from 'app/appSlice'
 import { clearTasksAndTodolists } from 'common/actions'
 import { ResultCode, TaskPriorities, TaskStatuses } from 'common/enums'
@@ -16,6 +15,7 @@ import {
   UpdateTaskModelType,
 } from '../api/tasksApi.types'
 import { FilterValuesType, todolistsThunks } from './todolistsSlice'
+import { createSlice } from '@reduxjs/toolkit'
 
 const slice = createSlice({
   name: 'tasks',

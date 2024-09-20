@@ -1,8 +1,8 @@
+import { unwrapResult } from '@reduxjs/toolkit'
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { IconButton, TextField } from '@mui/material'
 import { AddBox } from '@mui/icons-material'
-import { unwrapResult } from '@reduxjs/toolkit'
-import { BaseResponse } from 'common/types'
+import { BaseResponse } from '../../types'
 
 type Props = {
   addItem: (title: string) => Promise<any>
@@ -65,5 +65,3 @@ export const AddItemForm = React.memo(function ({
     </div>
   )
 })
-
-//Todo: 1) ДЗ из spr5w4; 2) Разобрать логику кода еще раз; 3) Сделать стили
