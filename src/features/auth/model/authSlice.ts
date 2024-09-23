@@ -1,9 +1,4 @@
-import {
-  createSlice,
-  isAnyOf,
-  isFulfilled,
-  PayloadAction,
-} from '@reduxjs/toolkit'
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 import { appActions } from 'app/model/appSlice'
 import { clearTasksAndTodolists } from 'common/actions'
 import { ResultCode } from 'common/enums'

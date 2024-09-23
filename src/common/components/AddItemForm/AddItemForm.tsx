@@ -41,7 +41,7 @@ export const AddItemForm = function (props: Props) {
     if (error !== null) {
       setError(null)
     }
-    if (e.charCode === 13) {
+    if (e.code === 'Enter') {
       addItemHandler()
     }
   }
@@ -54,7 +54,7 @@ export const AddItemForm = function (props: Props) {
         error={!!error}
         value={title}
         onChange={onChangeHandler}
-        onKeyPress={onKeyPressHandler}
+        onKeyDown={onKeyPressHandler}
         label='Title'
         helperText={error}
       />
