@@ -164,7 +164,7 @@ const removeTask = createAppAsyncThunk<RemoveTaskArgType, RemoveTaskArgType>(
 
 export const tasksReducer = slice.reducer
 export const tasksThunks = { fetchTasks, addTask, updateTask, removeTask }
-export const { selectTasks, selectFilteredTasks } = slice.selectors
+export const { selectFilteredTasks } = slice.selectors
 export const tasksPath = slice.reducerPath
 
 // types
@@ -180,5 +180,3 @@ export type UpdateDomainTaskModelType = {
 export type TasksStateType = {
   [key: string]: Array<TaskType>
 }
-
-//Todo: 1) Доделать ДЗ; 2) проверить еще раз весь код и повторить логику и флоу; 3) стили;
