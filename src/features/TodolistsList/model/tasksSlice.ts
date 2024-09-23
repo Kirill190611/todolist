@@ -180,3 +180,5 @@ export type UpdateDomainTaskModelType = {
 export type TasksStateType = {
   [key: string]: Array<TaskType>
 }
+
+//Todo: 1) Доделать ДЗ; 2) проверить еще раз весь код и повторить логику и флоу; 3) стили;

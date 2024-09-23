@@ -9,10 +9,9 @@ type Props = {
   disabled?: boolean
 }
 
-export const AddItemForm = React.memo(function ({
-  addItem,
-  disabled = false,
-}: Props) {
+export const AddItemForm = function (props: Props) {
+  const { addItem, disabled = false } = props
+
   let [title, setTitle] = useState('')
   let [error, setError] = useState<string | null>(null)
 
@@ -64,4 +63,4 @@ export const AddItemForm = React.memo(function ({
       </IconButton>
     </div>
   )
-})
+}
