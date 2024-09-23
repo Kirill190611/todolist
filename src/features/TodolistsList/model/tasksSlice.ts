@@ -1,4 +1,4 @@
-import { appActions } from 'app/appSlice'
+import { appActions } from 'app/model/appSlice'
 import { clearTasksAndTodolists } from 'common/actions'
 import { ResultCode, TaskPriorities, TaskStatuses } from 'common/enums'
 import {

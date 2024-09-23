@@ -1,6 +1,6 @@
-import axios from "axios"
-import { appActions } from "app/appSlice"
-import { AppDispatch } from "app/store"
+import axios from 'axios'
+import { appActions } from 'app/model/appSlice'
+import { AppDispatch } from 'app/model/store'
 
 /**
  * Обрабатывает ошибки сети, возникающие при отправке запросов на сервер
@@ -8,8 +8,11 @@ import { AppDispatch } from "app/store"
  * @param {AppDispatch} dispatch - Функция dispatch из библиотеки Redux для отправки actions
  * @returns {void} - Данная функция ничего не возвращает
  */
-export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch): void => {
-  let errorMessage = "Some error occurred"
+export const handleServerNetworkError = (
+  err: unknown,
+  dispatch: AppDispatch
+): void => {
+  let errorMessage = 'Some error occurred'
   if (axios.isAxiosError(err)) {
     errorMessage = err.response?.data?.message || err?.message || errorMessage
   } else if (err instanceof Error) {
@@ -19,5 +22,5 @@ export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch): v
   }
 
   dispatch(appActions.setAppError({ error: errorMessage }))
-  dispatch(appActions.setAppStatus({ status: "failed" }))
+  dispatch(appActions.setAppStatus({ status: 'failed' }))
 }

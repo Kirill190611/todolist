@@ -3,7 +3,7 @@ import MuiAlert from '@mui/material/Alert'
 import { useAppDispatch } from 'common/hooks'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { appActions, selectError } from 'app/appSlice'
+import { appActions, selectError } from 'app/model/appSlice'
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   function Alert(props, ref) {
